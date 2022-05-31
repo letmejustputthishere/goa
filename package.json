@@ -2,11 +2,12 @@
 	"name": "goa-app",
 	"version": "0.0.1",
 	"scripts": {
+		"gen": "graphql-codegen --require dotenv/config --config ./.graphqlrc.yaml",
 		"dev": "svelte-kit dev",
 		"build": "svelte-kit build",
 		"package": "svelte-kit package",
 		"preview": "svelte-kit preview",
-		"prepare": "svelte-kit sync",
+		"prepare": "svelte-kit sync && npm run gen",
 		"test": "playwright test",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
@@ -35,6 +36,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@kitql/all-in": "^0.6.7"
+		"@kitql/all-in": "^0.6.7",
+		"dotenv": "^16.0.1"
 	}
 }
