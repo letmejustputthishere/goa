@@ -1,0 +1,8 @@
+fragment RepositoryInfo on Repository {
+	createdAt
+	description
+	forkCount
+	homepageUrl
+	name
+	updatedAt
+}

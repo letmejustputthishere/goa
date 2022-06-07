@@ -1,0 +1,20 @@
+query Commits($owner: String!, $name: String!) {
+	repository(owner: $owner, name: $name) {
+		defaultBranchRef {
+			name
+			target {
+				... on Commit {
+					history {
+						nodes {
+							committedDate
+							committer {
+								name
+							}
+						}
+						totalCount
+					}
+				}
+			}
+		}
+	}
+}
