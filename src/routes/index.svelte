@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Languages from '$lib/components/visualization/common/contributions/languages/Languages.svelte';
-	import Forks from '$lib/components/visualization/common/contributions/forks/Forks.svelte';
-	import Collaborators from '$lib/components/visualization/common/contributions/collaborators/Collaborators.svelte';
-	// import KitQlInfo from '@kitql/all-in/KitQLInfo.svelte';
+	import KitQlInfo from '@kitql/all-in/KitQLInfo.svelte';
+	import Burstiness from '$lib/components/visualization/common/time/Burstiness/Burstiness.svelte';
+	import { KQL_Burstiness } from '$lib/graphql/_kitql/graphqlStores';
 </script>
 
-<Collaborators />
+<Burstiness />
+<KitQlInfo store={KQL_Burstiness} />
