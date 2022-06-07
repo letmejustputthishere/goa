@@ -1,8 +1,9 @@
 <script lang="ts">
+	import { browser } from '$app/env';
 	import { KQL_Collaborators } from '$lib/graphql/_kitql/graphqlStores';
 	import { CollaboratorAffiliation } from '$lib/graphql/_kitql/graphqlTypes';
 
-	KQL_Collaborators.query({
+	$: browser && KQL_Collaborators.query({
 		variables: { name: 'ic', owner: 'dfinity', affiliation: CollaboratorAffiliation.Direct }
 	});
 </script>
