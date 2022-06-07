@@ -2,7 +2,7 @@ query Collaborators(
 	$name: String!
 	$owner: String!
 	$affiliation: CollaboratorAffiliation!
-	$withName: Boolean! = false
+	$withName: Boolean = false
 ) {
 	repository(name: $name, owner: $owner) {
 		collaborators(first: 100, affiliation: $affiliation) {
