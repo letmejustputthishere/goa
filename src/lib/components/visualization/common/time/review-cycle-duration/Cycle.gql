@@ -1,0 +1,95 @@
+query Cycle($owner: String!, $name: String!) {
+	repository(owner: $owner, name: $name) {
+		pullRequests(first: 100, orderBy: { field: CREATED_AT, direction: ASC }) {
+			edges {
+				node {
+					createdAt
+					closedAt
+					closed
+					state
+					closedAt
+					reviewDecision
+					timelineItems(
+						first: 10
+						itemTypes: [PULL_REQUEST_COMMIT, PULL_REQUEST_REVIEW, ISSUE_COMMENT]
+					) {
+						nodes {
+							... on PullRequestCommit {
+								id
+								url
+								commit {
+									pushedDate
+									message
+								}
+							}
+							... on ClosedEvent {
+								createdAt
+							}
+							... on IssueComment {
+								createdAt
+							}
+							... on MergedEvent {
+								createdAt
+							}
+							... on PullRequestReview {
+								createdAt
+							}
+							... on ReadyForReviewEvent {
+								createdAt
+							}
+							... on ReopenedEvent {
+								createdAt
+							}
+							... on ReviewRequestedEvent {
+								createdAt
+							}
+						}
+					}
+					# comments {
+					# 	nodes {
+					# 		author {
+					# 			login
+					# 		}
+					# 	}
+					# }
+					# commits {
+					# 	nodes {
+					# 		commit {
+					# 			message
+					# 		}
+					# 	}
+					# }
+					# latestReviews {
+					# 	nodes {
+					# 		createdAt
+					# 		author {
+					# 			login
+					# 		}
+					# 	}
+					# }
+					# reviewRequests {
+					# 	nodes {
+					# 		requestedReviewer {
+					# 			__typename
+					# 		}
+					# 	}
+					# }
+					# reviewThreads {
+					# 	nodes {
+					# 		isOutdated
+					# 		isResolved
+					# 	}
+					# }
+					# reviews {
+					# 	nodes {
+					# 		author {
+					# 			login
+					# 		}
+					# 		body
+					# 	}
+					# }
+				}
+			}
+		}
+	}
+}
