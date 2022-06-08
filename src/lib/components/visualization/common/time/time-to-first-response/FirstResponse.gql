@@ -10,6 +10,7 @@ query FirstResponse(
 		issueCount
 		edges {
 			node {
+				__typename
 				... on PullRequest {
 					createdAt
 					url

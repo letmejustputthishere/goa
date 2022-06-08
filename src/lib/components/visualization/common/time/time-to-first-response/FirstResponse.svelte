@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { KQL_FirstResponse } from '$lib/graphql/_kitql/graphqlStores';
+	import { onMount } from 'svelte';
 
+	// this is run first on every render
 	KQL_FirstResponse.query({
 		variables: {
 			querystring: 'repo:python/cpython is:pr created:2010-12-30..2018-01-01',
@@ -9,6 +11,7 @@
 	});
 </script>
 
+<!-- before this is rendered, the query has already been sent and thus state is `isFetching` -->
 {#if $KQL_FirstResponse.isFetching}
 	Loading
 {:else if $KQL_FirstResponse.errors}
