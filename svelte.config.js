@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapter from '@sveltejs/adapter-static';
 import preprocess from 'svelte-preprocess';
 import watchAndRun from '@kitql/vite-plugin-watch-and-run';
 
@@ -9,7 +9,9 @@ const config = {
 	preprocess: preprocess({ postcss: true }),
 
 	kit: {
-		adapter: adapter(),
+		adapter: adapter({
+			fallback: '200.html'
+		}),
 		vite: {
 			plugins: [
 				watchAndRun([
