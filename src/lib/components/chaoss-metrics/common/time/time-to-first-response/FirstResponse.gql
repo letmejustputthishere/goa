@@ -3,6 +3,10 @@ query FirstResponse(
 	$endCursor: String = null
 	$timelineEndCursor: String = null
 ) {
+	rateLimit {
+		cost
+		limit
+	}
 	search(query: $querystring, type: ISSUE, first: 1, after: $endCursor) {
 		pageInfo {
 			endCursor # points to the last item
