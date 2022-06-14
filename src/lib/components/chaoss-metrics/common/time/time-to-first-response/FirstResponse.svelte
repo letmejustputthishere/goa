@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { KQL_FirstResponse } from '$lib/graphql/_kitql/graphqlStores';
-	import { onMount } from 'svelte';
 
 	// this is run first on every render
 	KQL_FirstResponse.query({

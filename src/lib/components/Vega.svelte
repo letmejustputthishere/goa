@@ -6,6 +6,7 @@
 	import * as vl from 'vega-lite-api';
 
 	export let data: { [key: string]: string | number }[];
+	export let viz;
 
 	function createChart(node: HTMLDivElement) {
 		const options = {
@@ -34,14 +35,12 @@
 			stroke: false,
 			size: 100,
 			opacity: 0.9
-		})
+		});
+
+		viz
 			.data(data)
-			.encode(
-				vl.y().fieldN('a'), // add nominal data from data key 'a' to y-axis
-				vl.x().fieldQ('b'), // add qunantitative data from data key 'b' to x-axis
-				vl.tooltip([vl.fieldQ('b'), vl.fieldN('a')])
-			)
 			.width(node.clientWidth)
+			.height(node.clientHeight)
 			.autosize({ type: 'fit', contains: 'padding', resize: true })
 			// .background('grey')
 			.render()
@@ -51,4 +50,4 @@
 	}
 </script>
 
-<div use:createChart class="mx-5" />
+<div use:createChart class="mx-5 min-h-[200px]" />
