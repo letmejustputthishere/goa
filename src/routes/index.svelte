@@ -20,9 +20,5 @@
 
 <FirstResponse />
 <Vega {data} />
-<Vega {data} />
-<Vega {data} />
-<Vega {data} />
-<Vega {data} />
 
 <KitQlInfo store={KQL_FirstResponse} />

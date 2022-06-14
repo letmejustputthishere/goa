@@ -7,7 +7,7 @@
 
 	export let data: { [key: string]: string | number }[];
 
-	function createChart(node) {
+	function createChart(node: HTMLDivElement) {
 		const options = {
 			config: {
 				// vega-lite default configuration
@@ -30,7 +30,7 @@
 		vl.register(vega, vegaLite, options);
 
 		vl.markPoint({
-			fill: '#3e3c38',
+			fill: 'red',
 			stroke: false,
 			size: 100,
 			opacity: 0.9
@@ -41,6 +41,9 @@
 				vl.x().fieldQ('b'), // add qunantitative data from data key 'b' to x-axis
 				vl.tooltip([vl.fieldQ('b'), vl.fieldN('a')])
 			)
+			.width(node.clientWidth)
+			.autosize({ type: 'fit', contains: 'padding', resize: true })
+			// .background('grey')
 			.render()
 			.then((chart) => {
 				node.appendChild(chart);
@@ -48,4 +51,4 @@
 	}
 </script>
 
-<div use:createChart class="w-full h-full" />
+<div use:createChart class="mx-5" />
