@@ -1,7 +1,11 @@
-<script>
-	// @ts-nocheck
-
+<script lang="ts">
 	import { onMount } from 'svelte';
+	import * as vega from 'vega';
+	import * as vegaLite from 'vega-lite';
+	import { Handler } from 'vega-tooltip';
+	import * as vl from 'vega-lite-api';
+
+	export let data: { [key: string]: string | number };
 
 	onMount(() => {
 		const options = {
@@ -10,7 +14,7 @@
 			},
 			init: (view) => {
 				// initialize tooltip handler
-				view.tooltip(new vegaTooltip.Handler().call);
+				view.tooltip(new Handler().call);
 				// enable horizontal scrolling for large plots
 				if (view.container()) view.container().style['overflow-x'] = 'auto';
 			},
@@ -19,24 +23,14 @@
 				loader: vega.loader({
 					baseURL: 'https://cdn.jsdelivr.net/npm/vega-datasets@1/'
 				}),
-				renderer: 'canvas'
+				renderer: 'svg'
 			}
 		};
 
 		vl.register(vega, vegaLite, options);
 
-		vl.markPoint({ tooltip: true })
-			.data([
-				{ a: 'A', b: 28 },
-				{ a: 'B', b: 55 },
-				{ a: 'C', b: 43 },
-				{ a: 'D', b: 91 },
-				{ a: 'E', b: 81 },
-				{ a: 'F', b: 53 },
-				{ a: 'G', b: 19 },
-				{ a: 'H', b: 99 },
-				{ a: 'I', b: 91 }
-			])
+		vl.markLine({ tooltip: true })
+			.data(data)
 			.encode(vl.x().fieldQ('b'), vl.y().fieldN('a'), vl.tooltip([vl.fieldQ('b'), vl.fieldN('a')]))
 			.render()
 			.then((chart) => {
