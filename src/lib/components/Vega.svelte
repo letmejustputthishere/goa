@@ -5,9 +5,9 @@
 	import { Handler } from 'vega-tooltip';
 	import * as vl from 'vega-lite-api';
 
-	export let data: { [key: string]: string | number };
+	export let data: { [key: string]: string | number }[];
 
-	onMount(() => {
+	function createChart(node) {
 		const options = {
 			config: {
 				// vega-lite default configuration
@@ -29,14 +29,23 @@
 
 		vl.register(vega, vegaLite, options);
 
-		vl.markLine({ tooltip: true })
+		vl.markPoint({
+			fill: '#3e3c38',
+			stroke: false,
+			size: 100,
+			opacity: 0.9
+		})
 			.data(data)
-			.encode(vl.x().fieldQ('b'), vl.y().fieldN('a'), vl.tooltip([vl.fieldQ('b'), vl.fieldN('a')]))
+			.encode(
+				vl.y().fieldN('a'), // add nominal data from data key 'a' to y-axis
+				vl.x().fieldQ('b'), // add qunantitative data from data key 'b' to x-axis
+				vl.tooltip([vl.fieldQ('b'), vl.fieldN('a')])
+			)
 			.render()
 			.then((chart) => {
-				document.getElementById('chart').appendChild(chart);
+				node.appendChild(chart);
 			});
-	});
+	}
 </script>
 
-<div id="chart" />
+<div use:createChart class="w-full h-full" />
