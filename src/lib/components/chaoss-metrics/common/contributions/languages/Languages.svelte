@@ -3,6 +3,7 @@
 	import { KQL_Languages } from '$lib/graphql/_kitql/graphqlStores';
 	import type { LanguagesQuery } from '$lib/graphql/_kitql/graphqlTypes';
 	import * as vl from 'vega-lite-api';
+	import { KitQLInfo } from '@kitql/all-in';
 
 	KQL_Languages.query({ variables: { name: 'ic', owner: 'dfinity' } });
 
@@ -21,6 +22,8 @@
 		})
 		.encode(vl.theta().fieldQ('size'), vl.color().field('name'));
 </script>
+
+<!-- <KitQLInfo store={KQL_Languages} /> -->
 
 <!-- before this is rendered, the query has already been sent and thus state is `isFetching` -->
 {#if $KQL_Languages.isFetching}

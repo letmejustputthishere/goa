@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import * as vega from 'vega';
 	import * as vegaLite from 'vega-lite';
 	import { Handler } from 'vega-tooltip';
@@ -29,13 +28,6 @@
 		};
 
 		vl.register(vega, vegaLite, options);
-
-		vl.markPoint({
-			fill: 'red',
-			stroke: false,
-			size: 100,
-			opacity: 0.9
-		});
 
 		viz
 			.data(data)
