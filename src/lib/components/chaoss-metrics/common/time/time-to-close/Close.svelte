@@ -4,8 +4,10 @@
 	import type { CloseQuery } from '$lib/graphql/_kitql/graphqlTypes';
 	import * as vl from 'vega-lite-api';
 
+	export let repo, owner;
+
 	KQL_Close.query({
-		variables: { querystring: 'repo:python/cpython is:issue created:2010-12-30..2018-01-01' }
+		variables: { querystring: `repo:${owner}/${repo} is:issue created:2010-12-30..2018-01-01` }
 	});
 
 	function transformResponse(data: CloseQuery): { [key: string]: string | number }[] {

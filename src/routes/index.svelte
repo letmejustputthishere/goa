@@ -4,12 +4,16 @@
 	import Close from '$lib/components/chaoss-metrics/common/time/time-to-close/Close.svelte';
 	import GitHubUrlInput from '$lib/components/GitHubUrlInput.svelte';
 
-	let input;
+	let source: { repo: string; owner: string } = null;
 </script>
 
 <div class="flex flex-col justify-center m-6">
-	<GitHubUrlInput bind:input />
-	<Forks />
-	<Languages />
-	<Close />
+	<GitHubUrlInput bind:source />
+	{#if source}
+		<Forks repo={source.repo} owner={source.owner} />
+		<Languages repo={source.repo} owner={source.owner} />
+		<Close repo={source.repo} owner={source.owner} />
+	{:else}
+		Please enter a GitHub URL
+	{/if}
 </div>

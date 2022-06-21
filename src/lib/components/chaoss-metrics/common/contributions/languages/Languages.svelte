@@ -5,7 +5,9 @@
 	import * as vl from 'vega-lite-api';
 	import { KitQLInfo } from '@kitql/all-in';
 
-	KQL_Languages.query({ variables: { name: 'ic', owner: 'dfinity' } });
+	export let repo, owner;
+
+	KQL_Languages.query({ variables: { name: repo, owner } });
 
 	function transformResponse(data: LanguagesQuery): { [key: string]: string | number }[] {
 		return data.repository.languages.edges.map(({ node, size }) => ({

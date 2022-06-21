@@ -4,7 +4,9 @@
 	import type { ForksQuery } from '$lib/graphql/_kitql/graphqlTypes';
 	import * as vl from 'vega-lite-api';
 
-	KQL_Forks.query({ variables: { name: 'ic', owner: 'dfinity' } });
+	export let repo, owner;
+
+	KQL_Forks.query({ variables: { name: repo, owner } });
 
 	function transformResponse(data: ForksQuery): { [key: string]: string | number }[] {
 		return data.repository.forks.edges.map(({ node }) => ({
