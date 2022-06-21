@@ -15,11 +15,10 @@
 
 	const viz = vl
 		.markBar({
-			width: 2,
 			tooltip: true
 		})
 		.encode(
-			vl.x().timeMD('date').axis({ title: 'Date', format: '%b' }),
+			vl.x().timeYM('date').fieldO('date').axis({ title: 'Date', format: '%b %y' }),
 			vl.y().count().axis({ title: 'Forks' })
 		);
 </script>

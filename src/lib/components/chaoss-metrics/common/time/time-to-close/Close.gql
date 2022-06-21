@@ -1,0 +1,22 @@
+query Close($querystring: String!, $endCursor: String = null) {
+	rateLimit {
+		cost
+		limit
+	}
+	search(query: $querystring, type: ISSUE, first: 100, after: $endCursor) {
+		pageInfo {
+			endCursor # points to the last item
+		}
+		issueCount
+		edges {
+			node {
+				__typename
+				... on Issue {
+					url
+					createdAt
+					closedAt
+				}
+			}
+		}
+	}
+}
