@@ -6,6 +6,7 @@
 
 	export let data: { [key: string]: string | number }[];
 	export let viz;
+	export let title;
 
 	function createChart(node: HTMLDivElement) {
 		const options = {
@@ -42,4 +43,7 @@
 	}
 </script>
 
-<div use:createChart class="mx-5 min-h-[200px]" />
+<div class="card bg-white m-5">
+	<div class="text-center mt-4">{title}</div>
+	<div use:createChart class="m-5 min-h-[200px]" />
+</div>

@@ -47,6 +47,5 @@
 {:else if $KQL_Close.errors}
 	{JSON.stringify($KQL_Close.errors)}
 {:else}
-	Time to Close
-	<Vega data={transformResponse($KQL_Close.data)} {viz} />
+	<Vega title="time to close" data={transformResponse($KQL_Close.data)} {viz} />
 {/if}

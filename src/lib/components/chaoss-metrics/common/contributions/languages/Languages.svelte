@@ -31,6 +31,5 @@
 {:else if $KQL_Languages.errors}
 	{JSON.stringify($KQL_Languages.errors)}
 {:else}
-	Languages
-	<Vega data={transformResponse($KQL_Languages.data)} {viz} />
+	<Vega title="languages" data={transformResponse($KQL_Languages.data)} {viz} />
 {/if}

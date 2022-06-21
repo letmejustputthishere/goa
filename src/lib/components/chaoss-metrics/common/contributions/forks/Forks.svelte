@@ -29,6 +29,5 @@
 {:else if $KQL_Forks.errors}
 	{JSON.stringify($KQL_Forks.errors)}
 {:else}
-	Repository Forks
-	<Vega data={transformResponse($KQL_Forks.data)} {viz} />
+	<Vega title="resporitory forks" data={transformResponse($KQL_Forks.data)} {viz} />
 {/if}
