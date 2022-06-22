@@ -16,8 +16,9 @@
 	}
 
 	const viz = vl
-		.markBar({
-			tooltip: true
+		.markTrail({
+			tooltip: true,
+			point: true
 		})
 		.encode(
 			vl.x().timeYM('date').fieldO('date').axis({ title: 'Date', format: '%b %y' }),
