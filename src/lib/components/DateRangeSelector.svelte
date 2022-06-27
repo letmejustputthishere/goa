@@ -1,8 +1,22 @@
 <script lang="ts">
+	import moment from 'moment';
+
 	export let selected;
+
+	let dates = [
+		{
+			label: '3 months',
+			value: moment().subtract(3, 'months').format()
+		},
+		{
+			label: '6 months',
+			value: moment().subtract(6, 'months').format()
+		}
+	];
 </script>
 
 <select bind:value={selected} class="select select-bordered">
-	<option selected value="3">3 months</option>
-	<option value="6">6 months</option>
+	{#each dates as date}
+		<option value={date.value}>{date.label}</option>
+	{/each}
 </select>

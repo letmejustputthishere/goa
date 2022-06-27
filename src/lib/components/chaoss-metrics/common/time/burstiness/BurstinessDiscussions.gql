@@ -1,0 +1,20 @@
+query BurstinessDiscussions($querystring: String!, $endCursor: String = null) {
+	rateLimit {
+		cost
+		limit
+	}
+	search(query: $querystring, type: DISCUSSION, first: 100, after: $endCursor) {
+		pageInfo {
+			endCursor # points to the last item
+		}
+		edges {
+			node {
+				__typename
+				... on Discussion {
+					url
+					createdAt
+				}
+			}
+		}
+	}
+}

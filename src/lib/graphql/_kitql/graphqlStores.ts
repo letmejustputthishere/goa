@@ -27,7 +27,9 @@ export function KQL__ResetAllCaches() {
 	KQL_Forks.resetCache();
 	KQL_Languages.resetCache();
 	KQL_Commits.resetCache();
-	KQL_Burstiness.resetCache();
+	KQL_BurstinessDiscussions.resetCache();
+	KQL_BurstinessIssues.resetCache();
+	KQL_BurstinessPRs.resetCache();
 	KQL_Cycle.resetCache();
 	KQL_Close.resetCache();
 	KQL_FirstResponse.resetCache();
@@ -519,20 +521,20 @@ function KQL_CommitsStore() {
  */
 export const KQL_Commits = KQL_CommitsStore();
 
-function KQL_BurstinessStore() {
-	const operationName = 'KQL_Burstiness';
+function KQL_BurstinessDiscussionsStore() {
+	const operationName = 'KQL_BurstinessDiscussions';
 	const operationType = ResponseResultType.Query;
 
 	// prettier-ignore
-	const { subscribe, set, update } = writable<RequestResult<Types.BurstinessQuery, Types.BurstinessQueryVariables>>({...defaultStoreValue, operationName, operationType});
+	const { subscribe, set, update } = writable<RequestResult<Types.BurstinessDiscussionsQuery, Types.BurstinessDiscussionsQueryVariables>>({...defaultStoreValue, operationName, operationType});
 
 		async function queryLocal(
-			params?: RequestQueryParameters<Types.BurstinessQueryVariables>
-		): Promise<RequestResult<Types.BurstinessQuery, Types.BurstinessQueryVariables>> {
+			params?: RequestQueryParameters<Types.BurstinessDiscussionsQueryVariables>
+		): Promise<RequestResult<Types.BurstinessDiscussionsQuery, Types.BurstinessDiscussionsQueryVariables>> {
 			let { fetch, variables, settings } = params ?? {};
 			let { cacheMs, policy } = settings ?? {};
 
-			const storedVariables = get(KQL_Burstiness).variables;
+			const storedVariables = get(KQL_BurstinessDiscussions).variables;
 			variables = variables ?? storedVariables;
 			policy = policy ?? kitQLClient.policy;
 
@@ -540,7 +542,7 @@ function KQL_BurstinessStore() {
 			if (browser) {
 				if (policy !== 'network-only') {
 					// prettier-ignore
-					const cachedData = kitQLClient.requestCache<Types.BurstinessQuery, Types.BurstinessQueryVariables>({
+					const cachedData = kitQLClient.requestCache<Types.BurstinessDiscussionsQuery, Types.BurstinessDiscussionsQueryVariables>({
 						variables, operationName, cacheMs,	browser
 					});
 					if (cachedData) {
@@ -565,9 +567,9 @@ function KQL_BurstinessStore() {
 			});
 
 			// prettier-ignore
-			const res = await kitQLClient.request<Types.BurstinessQuery, Types.BurstinessQueryVariables>({
+			const res = await kitQLClient.request<Types.BurstinessDiscussionsQuery, Types.BurstinessDiscussionsQueryVariables>({
 				skFetch: fetch,
-				document: Types.BurstinessDocument,
+				document: Types.BurstinessDiscussionsDocument,
 				variables, 
 				operationName, 
 				operationType, 
@@ -592,7 +594,7 @@ function KQL_BurstinessStore() {
 		 * @returns fill this store & the cache
 		 */
 		queryLoad: async (
-			params?: RequestQueryParameters<Types.BurstinessQueryVariables>
+			params?: RequestQueryParameters<Types.BurstinessDiscussionsQueryVariables>
 		): Promise<void> => {
 			if (clientStarted) {
 				queryLocal(params); // No await on purpose, we are in a client navigation.
@@ -605,7 +607,7 @@ function KQL_BurstinessStore() {
 		 * Reset Cache
 		 */
 		resetCache(
-			variables: Types.BurstinessQueryVariables | null = null,
+			variables: Types.BurstinessDiscussionsQueryVariables | null = null,
 			allOperationKey: boolean = true,
 			withResetStore: boolean = true
 		) {
@@ -619,26 +621,268 @@ function KQL_BurstinessStore() {
 		 * Patch the store &&|| cache with some data.
 		 */
 		// prettier-ignore
-		patch(data: Types.BurstinessQuery, variables: Types.BurstinessQueryVariables | null = null, type: PatchType = 'cache-and-store'): void {
+		patch(data: Types.BurstinessDiscussionsQuery, variables: Types.BurstinessDiscussionsQueryVariables | null = null, type: PatchType = 'cache-and-store'): void {
 			let updatedCacheStore = undefined;
 			if(type === 'cache-only' || type === 'cache-and-store') {
-				updatedCacheStore = kitQLClient.cacheUpdate<Types.BurstinessQuery, Types.BurstinessQueryVariables>(operationName, data, { variables });
+				updatedCacheStore = kitQLClient.cacheUpdate<Types.BurstinessDiscussionsQuery, Types.BurstinessDiscussionsQueryVariables>(operationName, data, { variables });
 			}
 			if(type === 'store-only' ) {
-				let toReturn = { ...get(KQL_Burstiness), data, variables } ;
+				let toReturn = { ...get(KQL_BurstinessDiscussions), data, variables } ;
 				set(toReturn);
 			}
 			if(type === 'cache-and-store' ) {
-				set({...get(KQL_Burstiness), ...updatedCacheStore});
+				set({...get(KQL_BurstinessDiscussions), ...updatedCacheStore});
 			}
 			kitQLClient.logInfo(operationName, "patch", type);
 		}
 	};
 }
 /**
- * KitQL Svelte Store with the latest `Burstiness` Operation
+ * KitQL Svelte Store with the latest `BurstinessDiscussions` Operation
  */
-export const KQL_Burstiness = KQL_BurstinessStore();
+export const KQL_BurstinessDiscussions = KQL_BurstinessDiscussionsStore();
+
+function KQL_BurstinessIssuesStore() {
+	const operationName = 'KQL_BurstinessIssues';
+	const operationType = ResponseResultType.Query;
+
+	// prettier-ignore
+	const { subscribe, set, update } = writable<RequestResult<Types.BurstinessIssuesQuery, Types.BurstinessIssuesQueryVariables>>({...defaultStoreValue, operationName, operationType});
+
+		async function queryLocal(
+			params?: RequestQueryParameters<Types.BurstinessIssuesQueryVariables>
+		): Promise<RequestResult<Types.BurstinessIssuesQuery, Types.BurstinessIssuesQueryVariables>> {
+			let { fetch, variables, settings } = params ?? {};
+			let { cacheMs, policy } = settings ?? {};
+
+			const storedVariables = get(KQL_BurstinessIssues).variables;
+			variables = variables ?? storedVariables;
+			policy = policy ?? kitQLClient.policy;
+
+			// Cache only in the browser for now. In SSR, we will need session identif to not mix peoples data
+			if (browser) {
+				if (policy !== 'network-only') {
+					// prettier-ignore
+					const cachedData = kitQLClient.requestCache<Types.BurstinessIssuesQuery, Types.BurstinessIssuesQueryVariables>({
+						variables, operationName, cacheMs,	browser
+					});
+					if (cachedData) {
+						const result = { ...cachedData, isFetching: false, status: RequestStatus.DONE };
+						if (policy === 'cache-first') {
+							set(result);
+							if (!result.isOutdated) {
+								return result;
+							}
+						} else if (policy === 'cache-only') {
+							set(result);
+							return result;
+						} else if (policy === 'cache-and-network') {
+							set(result);
+						}
+					}
+				}
+			}
+
+			update((c) => {
+				return { ...c, isFetching: true, status: RequestStatus.LOADING };
+			});
+
+			// prettier-ignore
+			const res = await kitQLClient.request<Types.BurstinessIssuesQuery, Types.BurstinessIssuesQueryVariables>({
+				skFetch: fetch,
+				document: Types.BurstinessIssuesDocument,
+				variables, 
+				operationName, 
+				operationType, 
+				browser
+			});
+			const result = { ...res, isFetching: false, status: RequestStatus.DONE, variables };
+			set(result);
+			return result;
+		}
+
+	return {
+		subscribe,
+
+		/**
+		 * Can be used for SSR, but simpler option is `.queryLoad`
+		 * @returns fill this store & the cache
+		 */
+		query: queryLocal,
+
+		/**
+		 * Ideal for SSR query. To be used in SvelteKit load function
+		 * @returns fill this store & the cache
+		 */
+		queryLoad: async (
+			params?: RequestQueryParameters<Types.BurstinessIssuesQueryVariables>
+		): Promise<void> => {
+			if (clientStarted) {
+				queryLocal(params); // No await on purpose, we are in a client navigation.
+			} else {
+				await queryLocal(params);
+			}
+		},
+
+		/**
+		 * Reset Cache
+		 */
+		resetCache(
+			variables: Types.BurstinessIssuesQueryVariables | null = null,
+			allOperationKey: boolean = true,
+			withResetStore: boolean = true
+		) {
+			kitQLClient.cacheRemove(operationName, { variables, allOperationKey });
+			if (withResetStore) {
+				set({ ...defaultStoreValue, operationName });
+			}
+		},
+
+		/**
+		 * Patch the store &&|| cache with some data.
+		 */
+		// prettier-ignore
+		patch(data: Types.BurstinessIssuesQuery, variables: Types.BurstinessIssuesQueryVariables | null = null, type: PatchType = 'cache-and-store'): void {
+			let updatedCacheStore = undefined;
+			if(type === 'cache-only' || type === 'cache-and-store') {
+				updatedCacheStore = kitQLClient.cacheUpdate<Types.BurstinessIssuesQuery, Types.BurstinessIssuesQueryVariables>(operationName, data, { variables });
+			}
+			if(type === 'store-only' ) {
+				let toReturn = { ...get(KQL_BurstinessIssues), data, variables } ;
+				set(toReturn);
+			}
+			if(type === 'cache-and-store' ) {
+				set({...get(KQL_BurstinessIssues), ...updatedCacheStore});
+			}
+			kitQLClient.logInfo(operationName, "patch", type);
+		}
+	};
+}
+/**
+ * KitQL Svelte Store with the latest `BurstinessIssues` Operation
+ */
+export const KQL_BurstinessIssues = KQL_BurstinessIssuesStore();
+
+function KQL_BurstinessPRsStore() {
+	const operationName = 'KQL_BurstinessPRs';
+	const operationType = ResponseResultType.Query;
+
+	// prettier-ignore
+	const { subscribe, set, update } = writable<RequestResult<Types.BurstinessPRsQuery, Types.BurstinessPRsQueryVariables>>({...defaultStoreValue, operationName, operationType});
+
+		async function queryLocal(
+			params?: RequestQueryParameters<Types.BurstinessPRsQueryVariables>
+		): Promise<RequestResult<Types.BurstinessPRsQuery, Types.BurstinessPRsQueryVariables>> {
+			let { fetch, variables, settings } = params ?? {};
+			let { cacheMs, policy } = settings ?? {};
+
+			const storedVariables = get(KQL_BurstinessPRs).variables;
+			variables = variables ?? storedVariables;
+			policy = policy ?? kitQLClient.policy;
+
+			// Cache only in the browser for now. In SSR, we will need session identif to not mix peoples data
+			if (browser) {
+				if (policy !== 'network-only') {
+					// prettier-ignore
+					const cachedData = kitQLClient.requestCache<Types.BurstinessPRsQuery, Types.BurstinessPRsQueryVariables>({
+						variables, operationName, cacheMs,	browser
+					});
+					if (cachedData) {
+						const result = { ...cachedData, isFetching: false, status: RequestStatus.DONE };
+						if (policy === 'cache-first') {
+							set(result);
+							if (!result.isOutdated) {
+								return result;
+							}
+						} else if (policy === 'cache-only') {
+							set(result);
+							return result;
+						} else if (policy === 'cache-and-network') {
+							set(result);
+						}
+					}
+				}
+			}
+
+			update((c) => {
+				return { ...c, isFetching: true, status: RequestStatus.LOADING };
+			});
+
+			// prettier-ignore
+			const res = await kitQLClient.request<Types.BurstinessPRsQuery, Types.BurstinessPRsQueryVariables>({
+				skFetch: fetch,
+				document: Types.BurstinessPRsDocument,
+				variables, 
+				operationName, 
+				operationType, 
+				browser
+			});
+			const result = { ...res, isFetching: false, status: RequestStatus.DONE, variables };
+			set(result);
+			return result;
+		}
+
+	return {
+		subscribe,
+
+		/**
+		 * Can be used for SSR, but simpler option is `.queryLoad`
+		 * @returns fill this store & the cache
+		 */
+		query: queryLocal,
+
+		/**
+		 * Ideal for SSR query. To be used in SvelteKit load function
+		 * @returns fill this store & the cache
+		 */
+		queryLoad: async (
+			params?: RequestQueryParameters<Types.BurstinessPRsQueryVariables>
+		): Promise<void> => {
+			if (clientStarted) {
+				queryLocal(params); // No await on purpose, we are in a client navigation.
+			} else {
+				await queryLocal(params);
+			}
+		},
+
+		/**
+		 * Reset Cache
+		 */
+		resetCache(
+			variables: Types.BurstinessPRsQueryVariables | null = null,
+			allOperationKey: boolean = true,
+			withResetStore: boolean = true
+		) {
+			kitQLClient.cacheRemove(operationName, { variables, allOperationKey });
+			if (withResetStore) {
+				set({ ...defaultStoreValue, operationName });
+			}
+		},
+
+		/**
+		 * Patch the store &&|| cache with some data.
+		 */
+		// prettier-ignore
+		patch(data: Types.BurstinessPRsQuery, variables: Types.BurstinessPRsQueryVariables | null = null, type: PatchType = 'cache-and-store'): void {
+			let updatedCacheStore = undefined;
+			if(type === 'cache-only' || type === 'cache-and-store') {
+				updatedCacheStore = kitQLClient.cacheUpdate<Types.BurstinessPRsQuery, Types.BurstinessPRsQueryVariables>(operationName, data, { variables });
+			}
+			if(type === 'store-only' ) {
+				let toReturn = { ...get(KQL_BurstinessPRs), data, variables } ;
+				set(toReturn);
+			}
+			if(type === 'cache-and-store' ) {
+				set({...get(KQL_BurstinessPRs), ...updatedCacheStore});
+			}
+			kitQLClient.logInfo(operationName, "patch", type);
+		}
+	};
+}
+/**
+ * KitQL Svelte Store with the latest `BurstinessPRs` Operation
+ */
+export const KQL_BurstinessPRs = KQL_BurstinessPRsStore();
 
 function KQL_CycleStore() {
 	const operationName = 'KQL_Cycle';

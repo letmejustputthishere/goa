@@ -40,6 +40,7 @@
 		"@sveltejs/adapter-static": "^1.0.0-next.34",
 		"daisyui": "^2.15.4",
 		"dotenv": "^16.0.1",
+		"moment": "^2.29.3",
 		"vega": "^5.22.1",
 		"vega-lite": "^5.2.0",
 		"vega-lite-api": "^5.0.0",
