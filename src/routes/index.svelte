@@ -6,7 +6,8 @@
 	import DateRangeSelector from '$lib/components/DateRangeSelector.svelte';
 	import GitHubUrlInput from '$lib/components/GitHubUrlInput.svelte';
 
-	let source: { repo: string; owner: string } = null;
+	// let source: { repo: string; owner: string } = null;
+	let source: { repo: string; owner: string } = { repo: 'kit', owner: 'sveltejs' };
 	let date;
 </script>
 

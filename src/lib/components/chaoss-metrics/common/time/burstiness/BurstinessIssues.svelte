@@ -22,7 +22,7 @@
 		})
 		.encode(
 			vl.x().timeYM('date').fieldO('date').axis({ title: 'Date', format: '%b %y' }),
-			vl.y().count().axis({ title: 'Forks' })
+			vl.y().count().axis({ title: 'Issues created' })
 		);
 </script>
 
@@ -32,5 +32,5 @@
 {:else if $KQL_BurstinessIssues.errors}
 	{JSON.stringify($KQL_BurstinessIssues.errors)}
 {:else}
-	<Vega title="resporitory forks" data={transformResponse($KQL_BurstinessIssues.data)} {viz} />
+	<Vega title="issue burstiness" data={transformResponse($KQL_BurstinessIssues.data)} {viz} />
 {/if}

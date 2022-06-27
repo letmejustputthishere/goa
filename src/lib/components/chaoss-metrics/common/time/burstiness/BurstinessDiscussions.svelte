@@ -2,12 +2,13 @@
 	import Vega from '$lib/components/Vega.svelte';
 	import { KQL_BurstinessDiscussions } from '$lib/graphql/_kitql/graphqlStores';
 	import type { BurstinessDiscussionsQuery } from '$lib/graphql/_kitql/graphqlTypes';
+	import KitQlInfo from '@kitql/all-in/KitQLInfo.svelte';
 	import * as vl from 'vega-lite-api';
 
 	export let repo, owner;
 
 	KQL_BurstinessDiscussions.query({
-		variables: { querystring: `repo:${owner}/${repo} created:2010-12-30..2018-01-01` }
+		variables: { querystring: `repo:${owner}/${repo} created:2021-12-30..2022-06-01` }
 	});
 
 	function transformResponse(
@@ -17,7 +18,7 @@
 			.map(({ node }) => {
 				if (node.__typename === 'Discussion') {
 					return {
-						created: node.createdAt,
+						date: node.createdAt.split('T')[0],
 						url: node.url
 					};
 				}
@@ -26,18 +27,13 @@
 	}
 
 	const viz = vl
-		.markBar({
-			tooltip: true
+		.markTrail({
+			tooltip: true,
+			point: true
 		})
-		.params(
-			vl.param('year').value(2018).bind(vl.slider(2010, 2018, 1))
-			// vl.param('aggregation').value('mean').bind(vl.menu('mean', 'sum', 'count'))
-		)
-		.transform(vl.filter('year(datum.created) === year'))
 		.encode(
-			vl.x().timeYM('created').fieldO('created').axis({ title: 'Date', format: '%b %y' }),
-			vl.y().aggregate('median').fieldQ('duration').axis({ title: 'median' })
-			// .axis({ title: vl.expr('aggregation') })
+			vl.x().timeYM('date').fieldO('date').axis({ title: 'Date', format: '%b %y' }),
+			vl.y().count().axis({ title: 'discussions created' })
 		);
 </script>
 
@@ -47,5 +43,10 @@
 {:else if $KQL_BurstinessDiscussions.errors}
 	{JSON.stringify($KQL_BurstinessDiscussions.errors)}
 {:else}
-	<Vega title="time to close" data={transformResponse($KQL_BurstinessDiscussions.data)} {viz} />
+	<Vega
+		title="burstiness discussion"
+		data={transformResponse($KQL_BurstinessDiscussions.data)}
+		{viz}
+	/>
+	<KitQlInfo store={KQL_BurstinessDiscussions} />
 {/if}
