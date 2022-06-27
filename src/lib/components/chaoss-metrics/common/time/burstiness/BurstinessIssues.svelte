@@ -2,11 +2,14 @@
 	import Vega from '$lib/components/Vega.svelte';
 	import { KQL_BurstinessIssues } from '$lib/graphql/_kitql/graphqlStores';
 	import type { BurstinessIssuesQuery } from '$lib/graphql/_kitql/graphqlTypes';
+	import { KitQLInfo } from '@kitql/all-in';
 	import * as vl from 'vega-lite-api';
 
-	export let repo, owner;
+	export let repo, owner, date;
 
-	KQL_BurstinessIssues.query({ variables: { name: repo, owner } });
+	$: if (date !== undefined) {
+		KQL_BurstinessIssues.query({ variables: { name: repo, owner, date } });
+	}
 
 	function transformResponse(data: BurstinessIssuesQuery): { [key: string]: string | number }[] {
 		return data.repository.issues.edges.map(({ node }) => ({
@@ -31,6 +34,6 @@
 	Loading
 {:else if $KQL_BurstinessIssues.errors}
 	{JSON.stringify($KQL_BurstinessIssues.errors)}
-{:else}
+{:else if $KQL_BurstinessIssues.data}
 	<Vega title="issue burstiness" data={transformResponse($KQL_BurstinessIssues.data)} {viz} />
 {/if}

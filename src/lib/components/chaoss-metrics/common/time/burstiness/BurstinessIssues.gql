@@ -1,10 +1,6 @@
-query BurstinessIssues($owner: String!, $name: String!) {
+query BurstinessIssues($owner: String!, $name: String!, $date: DateTime!) {
 	repository(owner: $owner, name: $name) {
-		issues(
-			first: 100
-			orderBy: { field: CREATED_AT, direction: ASC }
-			filterBy: { since: "2022-06-07T00:00:00" }
-		) {
+		issues(first: 100, orderBy: { field: CREATED_AT, direction: ASC }, filterBy: { since: $date }) {
 			edges {
 				node {
 					title

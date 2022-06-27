@@ -8,7 +8,7 @@
 
 	// let source: { repo: string; owner: string } = null;
 	let source: { repo: string; owner: string } = { repo: 'kit', owner: 'sveltejs' };
-	let date;
+	let date: string;
 </script>
 
 <div class="flex flex-col justify-center m-6">
@@ -20,7 +20,7 @@
 		<Forks repo={source.repo} owner={source.owner} />
 		<Languages repo={source.repo} owner={source.owner} />
 		<Close repo={source.repo} owner={source.owner} />
-		<Burstiness repo={source.repo} owner={source.owner} />
+		<Burstiness repo={source.repo} owner={source.owner} {date} />
 	{:else}
 		Please enter a GitHub URL
 	{/if}

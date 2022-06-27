@@ -3,9 +3,9 @@
 	import BurstinessIssues from './BurstinessIssues.svelte';
 	import BurstinessPRs from './BurstinessPRs.svelte';
 
-	export let repo, owner;
+	export let repo, owner, date;
 </script>
 
-<BurstinessDiscussions {repo} {owner} />
-<BurstinessPRs {repo} {owner} />
-<BurstinessIssues {repo} {owner} />
+<BurstinessDiscussions {repo} {owner} {date} />
+<BurstinessPRs {repo} {owner} {date} />
+<BurstinessIssues {repo} {owner} {date} />

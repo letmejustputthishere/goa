@@ -5,11 +5,13 @@
 	import KitQlInfo from '@kitql/all-in/KitQLInfo.svelte';
 	import * as vl from 'vega-lite-api';
 
-	export let repo, owner;
+	export let repo, owner, date;
 
-	KQL_BurstinessDiscussions.query({
-		variables: { querystring: `repo:${owner}/${repo} created:2021-12-30..2022-06-01` }
-	});
+	$: if (date !== undefined) {
+		KQL_BurstinessDiscussions.query({
+			variables: { querystring: `repo:${owner}/${repo} created:>${date}` }
+		});
+	}
 
 	function transformResponse(
 		data: BurstinessDiscussionsQuery
@@ -42,11 +44,10 @@
 	Loading
 {:else if $KQL_BurstinessDiscussions.errors}
 	{JSON.stringify($KQL_BurstinessDiscussions.errors)}
-{:else}
+{:else if $KQL_BurstinessDiscussions.data}
 	<Vega
 		title="burstiness discussion"
 		data={transformResponse($KQL_BurstinessDiscussions.data)}
 		{viz}
 	/>
-	<KitQlInfo store={KQL_BurstinessDiscussions} />
 {/if}
