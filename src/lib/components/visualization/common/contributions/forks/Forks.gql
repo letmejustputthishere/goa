@@ -1,9 +1,0 @@
-query Forks($name: String!, $owner: String!) {
-	repository(name: $name, owner: $owner) {
-		forks(first: 100) {
-			nodes {
-				...RepositoryInfo
-			}
-		}
-	}
-}

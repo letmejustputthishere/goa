@@ -1,0 +1,129 @@
+query FirstResponse(
+	$querystring: String!
+	$endCursor: String = null
+	$timelineEndCursor: String = null
+) {
+	rateLimit {
+		cost
+		limit
+	}
+	search(query: $querystring, type: ISSUE, first: 1, after: $endCursor) {
+		pageInfo {
+			endCursor # points to the last item
+		}
+		issueCount
+		edges {
+			node {
+				__typename
+				... on PullRequest {
+					createdAt
+					url
+					author {
+						login
+					}
+					timelineItems(
+						first: 1
+						itemTypes: [
+							ASSIGNED_EVENT
+							CLOSED_EVENT
+							ISSUE_COMMENT
+							MERGED_EVENT
+							PULL_REQUEST_REVIEW
+							READY_FOR_REVIEW_EVENT
+							REVIEW_REQUESTED_EVENT
+							MARKED_AS_DUPLICATE_EVENT
+							MILESTONED_EVENT
+						]
+						after: $timelineEndCursor
+					) {
+						nodes {
+							... on AssignedEvent {
+								__typename
+								createdAt
+							}
+							... on ClosedEvent {
+								__typename
+								createdAt
+							}
+							... on IssueComment {
+								__typename
+								createdAt
+								author {
+									__typename
+								}
+							}
+							... on MergedEvent {
+								__typename
+								createdAt
+							}
+							... on PullRequestReview {
+								__typename
+								createdAt
+							}
+							... on ReadyForReviewEvent {
+								__typename
+								createdAt
+							}
+							... on ReviewRequestedEvent {
+								__typename
+								createdAt
+							}
+							... on MarkedAsDuplicateEvent {
+								__typename
+								createdAt
+							}
+							... on MilestonedEvent {
+								__typename
+								createdAt
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+# 		issues(last: 10, orderBy: { field: CREATED_AT, direction: ASC }) {
+# 			edges {
+# 				node {
+# 					createdAt
+# 					url
+# 					timelineItems(
+# 						first: 1
+# 						itemTypes: [
+# 							ASSIGNED_EVENT
+# 							CLOSED_EVENT
+# 							ISSUE_COMMENT
+# 							MARKED_AS_DUPLICATE_EVENT
+# 							MILESTONED_EVENT
+# 							ASSIGNED_EVENT
+# 						]
+# 					) {
+# 						nodes {
+# 							... on AssignedEvent {
+# 								__typename
+# 								createdAt
+# 							}
+# 							... on ClosedEvent {
+# 								__typename
+# 								createdAt
+# 							}
+# 							... on IssueComment {
+# 								__typename
+# 								createdAt
+# 							}
+# 							... on MarkedAsDuplicateEvent {
+# 								__typename
+# 								createdAt
+# 							}
+# 							... on MilestonedEvent {
+# 								__typename
+# 								createdAt
+# 							}
+# 						}
+# 					}
+# 				}
+# 			}
+# 		}
+# 	}
+# }

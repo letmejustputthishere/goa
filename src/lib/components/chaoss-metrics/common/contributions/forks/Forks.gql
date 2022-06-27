@@ -1,0 +1,13 @@
+query Forks($name: String!, $owner: String!) {
+	repository(name: $name, owner: $owner) {
+		forkCount
+		forks(first: 100, orderBy: { field: CREATED_AT, direction: DESC }) {
+			edges {
+				node {
+					createdAt
+					url
+				}
+			}
+		}
+	}
+}

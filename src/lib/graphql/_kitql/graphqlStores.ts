@@ -27,7 +27,10 @@ export function KQL__ResetAllCaches() {
 	KQL_Forks.resetCache();
 	KQL_Languages.resetCache();
 	KQL_Commits.resetCache();
-	KQL_Followers.resetCache();
+	KQL_Burstiness.resetCache();
+	KQL_Cycle.resetCache();
+	KQL_Close.resetCache();
+	KQL_FirstResponse.resetCache();
 	KQL_Me.resetCache();
 }
  
@@ -516,20 +519,20 @@ function KQL_CommitsStore() {
  */
 export const KQL_Commits = KQL_CommitsStore();
 
-function KQL_FollowersStore() {
-	const operationName = 'KQL_Followers';
+function KQL_BurstinessStore() {
+	const operationName = 'KQL_Burstiness';
 	const operationType = ResponseResultType.Query;
 
 	// prettier-ignore
-	const { subscribe, set, update } = writable<RequestResult<Types.FollowersQuery, Types.FollowersQueryVariables>>({...defaultStoreValue, operationName, operationType});
+	const { subscribe, set, update } = writable<RequestResult<Types.BurstinessQuery, Types.BurstinessQueryVariables>>({...defaultStoreValue, operationName, operationType});
 
 		async function queryLocal(
-			params?: RequestQueryParameters<Types.FollowersQueryVariables>
-		): Promise<RequestResult<Types.FollowersQuery, Types.FollowersQueryVariables>> {
+			params?: RequestQueryParameters<Types.BurstinessQueryVariables>
+		): Promise<RequestResult<Types.BurstinessQuery, Types.BurstinessQueryVariables>> {
 			let { fetch, variables, settings } = params ?? {};
 			let { cacheMs, policy } = settings ?? {};
 
-			const storedVariables = get(KQL_Followers).variables;
+			const storedVariables = get(KQL_Burstiness).variables;
 			variables = variables ?? storedVariables;
 			policy = policy ?? kitQLClient.policy;
 
@@ -537,7 +540,7 @@ function KQL_FollowersStore() {
 			if (browser) {
 				if (policy !== 'network-only') {
 					// prettier-ignore
-					const cachedData = kitQLClient.requestCache<Types.FollowersQuery, Types.FollowersQueryVariables>({
+					const cachedData = kitQLClient.requestCache<Types.BurstinessQuery, Types.BurstinessQueryVariables>({
 						variables, operationName, cacheMs,	browser
 					});
 					if (cachedData) {
@@ -562,9 +565,9 @@ function KQL_FollowersStore() {
 			});
 
 			// prettier-ignore
-			const res = await kitQLClient.request<Types.FollowersQuery, Types.FollowersQueryVariables>({
+			const res = await kitQLClient.request<Types.BurstinessQuery, Types.BurstinessQueryVariables>({
 				skFetch: fetch,
-				document: Types.FollowersDocument,
+				document: Types.BurstinessDocument,
 				variables, 
 				operationName, 
 				operationType, 
@@ -589,7 +592,7 @@ function KQL_FollowersStore() {
 		 * @returns fill this store & the cache
 		 */
 		queryLoad: async (
-			params?: RequestQueryParameters<Types.FollowersQueryVariables>
+			params?: RequestQueryParameters<Types.BurstinessQueryVariables>
 		): Promise<void> => {
 			if (clientStarted) {
 				queryLocal(params); // No await on purpose, we are in a client navigation.
@@ -602,7 +605,7 @@ function KQL_FollowersStore() {
 		 * Reset Cache
 		 */
 		resetCache(
-			variables: Types.FollowersQueryVariables | null = null,
+			variables: Types.BurstinessQueryVariables | null = null,
 			allOperationKey: boolean = true,
 			withResetStore: boolean = true
 		) {
@@ -616,26 +619,389 @@ function KQL_FollowersStore() {
 		 * Patch the store &&|| cache with some data.
 		 */
 		// prettier-ignore
-		patch(data: Types.FollowersQuery, variables: Types.FollowersQueryVariables | null = null, type: PatchType = 'cache-and-store'): void {
+		patch(data: Types.BurstinessQuery, variables: Types.BurstinessQueryVariables | null = null, type: PatchType = 'cache-and-store'): void {
 			let updatedCacheStore = undefined;
 			if(type === 'cache-only' || type === 'cache-and-store') {
-				updatedCacheStore = kitQLClient.cacheUpdate<Types.FollowersQuery, Types.FollowersQueryVariables>(operationName, data, { variables });
+				updatedCacheStore = kitQLClient.cacheUpdate<Types.BurstinessQuery, Types.BurstinessQueryVariables>(operationName, data, { variables });
 			}
 			if(type === 'store-only' ) {
-				let toReturn = { ...get(KQL_Followers), data, variables } ;
+				let toReturn = { ...get(KQL_Burstiness), data, variables } ;
 				set(toReturn);
 			}
 			if(type === 'cache-and-store' ) {
-				set({...get(KQL_Followers), ...updatedCacheStore});
+				set({...get(KQL_Burstiness), ...updatedCacheStore});
 			}
 			kitQLClient.logInfo(operationName, "patch", type);
 		}
 	};
 }
 /**
- * KitQL Svelte Store with the latest `Followers` Operation
+ * KitQL Svelte Store with the latest `Burstiness` Operation
  */
-export const KQL_Followers = KQL_FollowersStore();
+export const KQL_Burstiness = KQL_BurstinessStore();
+
+function KQL_CycleStore() {
+	const operationName = 'KQL_Cycle';
+	const operationType = ResponseResultType.Query;
+
+	// prettier-ignore
+	const { subscribe, set, update } = writable<RequestResult<Types.CycleQuery, Types.CycleQueryVariables>>({...defaultStoreValue, operationName, operationType});
+
+		async function queryLocal(
+			params?: RequestQueryParameters<Types.CycleQueryVariables>
+		): Promise<RequestResult<Types.CycleQuery, Types.CycleQueryVariables>> {
+			let { fetch, variables, settings } = params ?? {};
+			let { cacheMs, policy } = settings ?? {};
+
+			const storedVariables = get(KQL_Cycle).variables;
+			variables = variables ?? storedVariables;
+			policy = policy ?? kitQLClient.policy;
+
+			// Cache only in the browser for now. In SSR, we will need session identif to not mix peoples data
+			if (browser) {
+				if (policy !== 'network-only') {
+					// prettier-ignore
+					const cachedData = kitQLClient.requestCache<Types.CycleQuery, Types.CycleQueryVariables>({
+						variables, operationName, cacheMs,	browser
+					});
+					if (cachedData) {
+						const result = { ...cachedData, isFetching: false, status: RequestStatus.DONE };
+						if (policy === 'cache-first') {
+							set(result);
+							if (!result.isOutdated) {
+								return result;
+							}
+						} else if (policy === 'cache-only') {
+							set(result);
+							return result;
+						} else if (policy === 'cache-and-network') {
+							set(result);
+						}
+					}
+				}
+			}
+
+			update((c) => {
+				return { ...c, isFetching: true, status: RequestStatus.LOADING };
+			});
+
+			// prettier-ignore
+			const res = await kitQLClient.request<Types.CycleQuery, Types.CycleQueryVariables>({
+				skFetch: fetch,
+				document: Types.CycleDocument,
+				variables, 
+				operationName, 
+				operationType, 
+				browser
+			});
+			const result = { ...res, isFetching: false, status: RequestStatus.DONE, variables };
+			set(result);
+			return result;
+		}
+
+	return {
+		subscribe,
+
+		/**
+		 * Can be used for SSR, but simpler option is `.queryLoad`
+		 * @returns fill this store & the cache
+		 */
+		query: queryLocal,
+
+		/**
+		 * Ideal for SSR query. To be used in SvelteKit load function
+		 * @returns fill this store & the cache
+		 */
+		queryLoad: async (
+			params?: RequestQueryParameters<Types.CycleQueryVariables>
+		): Promise<void> => {
+			if (clientStarted) {
+				queryLocal(params); // No await on purpose, we are in a client navigation.
+			} else {
+				await queryLocal(params);
+			}
+		},
+
+		/**
+		 * Reset Cache
+		 */
+		resetCache(
+			variables: Types.CycleQueryVariables | null = null,
+			allOperationKey: boolean = true,
+			withResetStore: boolean = true
+		) {
+			kitQLClient.cacheRemove(operationName, { variables, allOperationKey });
+			if (withResetStore) {
+				set({ ...defaultStoreValue, operationName });
+			}
+		},
+
+		/**
+		 * Patch the store &&|| cache with some data.
+		 */
+		// prettier-ignore
+		patch(data: Types.CycleQuery, variables: Types.CycleQueryVariables | null = null, type: PatchType = 'cache-and-store'): void {
+			let updatedCacheStore = undefined;
+			if(type === 'cache-only' || type === 'cache-and-store') {
+				updatedCacheStore = kitQLClient.cacheUpdate<Types.CycleQuery, Types.CycleQueryVariables>(operationName, data, { variables });
+			}
+			if(type === 'store-only' ) {
+				let toReturn = { ...get(KQL_Cycle), data, variables } ;
+				set(toReturn);
+			}
+			if(type === 'cache-and-store' ) {
+				set({...get(KQL_Cycle), ...updatedCacheStore});
+			}
+			kitQLClient.logInfo(operationName, "patch", type);
+		}
+	};
+}
+/**
+ * KitQL Svelte Store with the latest `Cycle` Operation
+ */
+export const KQL_Cycle = KQL_CycleStore();
+
+function KQL_CloseStore() {
+	const operationName = 'KQL_Close';
+	const operationType = ResponseResultType.Query;
+
+	// prettier-ignore
+	const { subscribe, set, update } = writable<RequestResult<Types.CloseQuery, Types.CloseQueryVariables>>({...defaultStoreValue, operationName, operationType});
+
+		async function queryLocal(
+			params?: RequestQueryParameters<Types.CloseQueryVariables>
+		): Promise<RequestResult<Types.CloseQuery, Types.CloseQueryVariables>> {
+			let { fetch, variables, settings } = params ?? {};
+			let { cacheMs, policy } = settings ?? {};
+
+			const storedVariables = get(KQL_Close).variables;
+			variables = variables ?? storedVariables;
+			policy = policy ?? kitQLClient.policy;
+
+			// Cache only in the browser for now. In SSR, we will need session identif to not mix peoples data
+			if (browser) {
+				if (policy !== 'network-only') {
+					// prettier-ignore
+					const cachedData = kitQLClient.requestCache<Types.CloseQuery, Types.CloseQueryVariables>({
+						variables, operationName, cacheMs,	browser
+					});
+					if (cachedData) {
+						const result = { ...cachedData, isFetching: false, status: RequestStatus.DONE };
+						if (policy === 'cache-first') {
+							set(result);
+							if (!result.isOutdated) {
+								return result;
+							}
+						} else if (policy === 'cache-only') {
+							set(result);
+							return result;
+						} else if (policy === 'cache-and-network') {
+							set(result);
+						}
+					}
+				}
+			}
+
+			update((c) => {
+				return { ...c, isFetching: true, status: RequestStatus.LOADING };
+			});
+
+			// prettier-ignore
+			const res = await kitQLClient.request<Types.CloseQuery, Types.CloseQueryVariables>({
+				skFetch: fetch,
+				document: Types.CloseDocument,
+				variables, 
+				operationName, 
+				operationType, 
+				browser
+			});
+			const result = { ...res, isFetching: false, status: RequestStatus.DONE, variables };
+			set(result);
+			return result;
+		}
+
+	return {
+		subscribe,
+
+		/**
+		 * Can be used for SSR, but simpler option is `.queryLoad`
+		 * @returns fill this store & the cache
+		 */
+		query: queryLocal,
+
+		/**
+		 * Ideal for SSR query. To be used in SvelteKit load function
+		 * @returns fill this store & the cache
+		 */
+		queryLoad: async (
+			params?: RequestQueryParameters<Types.CloseQueryVariables>
+		): Promise<void> => {
+			if (clientStarted) {
+				queryLocal(params); // No await on purpose, we are in a client navigation.
+			} else {
+				await queryLocal(params);
+			}
+		},
+
+		/**
+		 * Reset Cache
+		 */
+		resetCache(
+			variables: Types.CloseQueryVariables | null = null,
+			allOperationKey: boolean = true,
+			withResetStore: boolean = true
+		) {
+			kitQLClient.cacheRemove(operationName, { variables, allOperationKey });
+			if (withResetStore) {
+				set({ ...defaultStoreValue, operationName });
+			}
+		},
+
+		/**
+		 * Patch the store &&|| cache with some data.
+		 */
+		// prettier-ignore
+		patch(data: Types.CloseQuery, variables: Types.CloseQueryVariables | null = null, type: PatchType = 'cache-and-store'): void {
+			let updatedCacheStore = undefined;
+			if(type === 'cache-only' || type === 'cache-and-store') {
+				updatedCacheStore = kitQLClient.cacheUpdate<Types.CloseQuery, Types.CloseQueryVariables>(operationName, data, { variables });
+			}
+			if(type === 'store-only' ) {
+				let toReturn = { ...get(KQL_Close), data, variables } ;
+				set(toReturn);
+			}
+			if(type === 'cache-and-store' ) {
+				set({...get(KQL_Close), ...updatedCacheStore});
+			}
+			kitQLClient.logInfo(operationName, "patch", type);
+		}
+	};
+}
+/**
+ * KitQL Svelte Store with the latest `Close` Operation
+ */
+export const KQL_Close = KQL_CloseStore();
+
+function KQL_FirstResponseStore() {
+	const operationName = 'KQL_FirstResponse';
+	const operationType = ResponseResultType.Query;
+
+	// prettier-ignore
+	const { subscribe, set, update } = writable<RequestResult<Types.FirstResponseQuery, Types.FirstResponseQueryVariables>>({...defaultStoreValue, operationName, operationType});
+
+		async function queryLocal(
+			params?: RequestQueryParameters<Types.FirstResponseQueryVariables>
+		): Promise<RequestResult<Types.FirstResponseQuery, Types.FirstResponseQueryVariables>> {
+			let { fetch, variables, settings } = params ?? {};
+			let { cacheMs, policy } = settings ?? {};
+
+			const storedVariables = get(KQL_FirstResponse).variables;
+			variables = variables ?? storedVariables;
+			policy = policy ?? kitQLClient.policy;
+
+			// Cache only in the browser for now. In SSR, we will need session identif to not mix peoples data
+			if (browser) {
+				if (policy !== 'network-only') {
+					// prettier-ignore
+					const cachedData = kitQLClient.requestCache<Types.FirstResponseQuery, Types.FirstResponseQueryVariables>({
+						variables, operationName, cacheMs,	browser
+					});
+					if (cachedData) {
+						const result = { ...cachedData, isFetching: false, status: RequestStatus.DONE };
+						if (policy === 'cache-first') {
+							set(result);
+							if (!result.isOutdated) {
+								return result;
+							}
+						} else if (policy === 'cache-only') {
+							set(result);
+							return result;
+						} else if (policy === 'cache-and-network') {
+							set(result);
+						}
+					}
+				}
+			}
+
+			update((c) => {
+				return { ...c, isFetching: true, status: RequestStatus.LOADING };
+			});
+
+			// prettier-ignore
+			const res = await kitQLClient.request<Types.FirstResponseQuery, Types.FirstResponseQueryVariables>({
+				skFetch: fetch,
+				document: Types.FirstResponseDocument,
+				variables, 
+				operationName, 
+				operationType, 
+				browser
+			});
+			const result = { ...res, isFetching: false, status: RequestStatus.DONE, variables };
+			set(result);
+			return result;
+		}
+
+	return {
+		subscribe,
+
+		/**
+		 * Can be used for SSR, but simpler option is `.queryLoad`
+		 * @returns fill this store & the cache
+		 */
+		query: queryLocal,
+
+		/**
+		 * Ideal for SSR query. To be used in SvelteKit load function
+		 * @returns fill this store & the cache
+		 */
+		queryLoad: async (
+			params?: RequestQueryParameters<Types.FirstResponseQueryVariables>
+		): Promise<void> => {
+			if (clientStarted) {
+				queryLocal(params); // No await on purpose, we are in a client navigation.
+			} else {
+				await queryLocal(params);
+			}
+		},
+
+		/**
+		 * Reset Cache
+		 */
+		resetCache(
+			variables: Types.FirstResponseQueryVariables | null = null,
+			allOperationKey: boolean = true,
+			withResetStore: boolean = true
+		) {
+			kitQLClient.cacheRemove(operationName, { variables, allOperationKey });
+			if (withResetStore) {
+				set({ ...defaultStoreValue, operationName });
+			}
+		},
+
+		/**
+		 * Patch the store &&|| cache with some data.
+		 */
+		// prettier-ignore
+		patch(data: Types.FirstResponseQuery, variables: Types.FirstResponseQueryVariables | null = null, type: PatchType = 'cache-and-store'): void {
+			let updatedCacheStore = undefined;
+			if(type === 'cache-only' || type === 'cache-and-store') {
+				updatedCacheStore = kitQLClient.cacheUpdate<Types.FirstResponseQuery, Types.FirstResponseQueryVariables>(operationName, data, { variables });
+			}
+			if(type === 'store-only' ) {
+				let toReturn = { ...get(KQL_FirstResponse), data, variables } ;
+				set(toReturn);
+			}
+			if(type === 'cache-and-store' ) {
+				set({...get(KQL_FirstResponse), ...updatedCacheStore});
+			}
+			kitQLClient.logInfo(operationName, "patch", type);
+		}
+	};
+}
+/**
+ * KitQL Svelte Store with the latest `FirstResponse` Operation
+ */
+export const KQL_FirstResponse = KQL_FirstResponseStore();
 
 function KQL_MeStore() {
 	const operationName = 'KQL_Me';
