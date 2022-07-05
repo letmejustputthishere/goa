@@ -1,20 +1,20 @@
 <script lang="ts">
 	import { browser } from '$app/env';
-	import { KQL_Collaborators } from '$lib/graphql/_kitql/graphqlStores';
-	import { CollaboratorAffiliation } from '$lib/graphql/_kitql/graphqlTypes';
+	import { GQL_Collaborators, CollaboratorAffiliation } from '$houdini';
 
-	$: browser && KQL_Collaborators.query({
-		variables: { name: 'ic', owner: 'dfinity', affiliation: CollaboratorAffiliation.Direct }
-	});
+	$: browser &&
+		GQL_Collaborators.fetch({
+			variables: { name: 'ic', owner: 'dfinity', affiliation: CollaboratorAffiliation.DIRECT }
+		});
 </script>
 
-{$KQL_Collaborators.isFetching ? 'Loading ...' : ''}
+{$GQL_Collaborators.isFetching ? 'Loading ...' : ''}
 
-{#each $KQL_Collaborators.data?.repository.collaborators.nodes || [] as collaborator}
+{#each $GQL_Collaborators.data?.repository.collaborators.nodes || [] as collaborator}
 	<div>
 		{collaborator.name}
 		{collaborator.location}
 	</div>
 {/each}
 
-{JSON.stringify($KQL_Collaborators.errors)}
+{JSON.stringify($GQL_Collaborators.errors)}

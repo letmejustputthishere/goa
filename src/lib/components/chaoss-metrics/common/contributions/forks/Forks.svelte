@@ -1,14 +1,14 @@
 <script lang="ts">
 	import Vega from '$lib/components/Vega.svelte';
-	import { KQL_Forks } from '$lib/graphql/_kitql/graphqlStores';
-	import type { ForksQuery } from '$lib/graphql/_kitql/graphqlTypes';
+	import { GQL_Forks } from '$houdini';
+	import type { Forks$result } from '$houdini';
 	import * as vl from 'vega-lite-api';
 
 	export let repo, owner;
 
-	KQL_Forks.query({ variables: { name: repo, owner } });
+	GQL_Forks.fetch({ variables: { name: repo, owner } });
 
-	function transformResponse(data: ForksQuery): { [key: string]: string | number }[] {
+	function transformResponse(data: Forks$result): { [key: string]: string | number }[] {
 		return data.repository.forks.edges.map(({ node }) => ({
 			date: node.createdAt.split('T')[0],
 			url: node.url
@@ -27,10 +27,10 @@
 </script>
 
 <!-- before this is rendered, the query has already been sent and thus state is `isFetching` -->
-{#if $KQL_Forks.isFetching}
+{#if $GQL_Forks.isFetching}
 	Loading
-{:else if $KQL_Forks.errors}
-	{JSON.stringify($KQL_Forks.errors)}
+{:else if $GQL_Forks.errors}
+	{JSON.stringify($GQL_Forks.errors)}
 {:else}
-	<Vega title="resporitory forks" data={transformResponse($KQL_Forks.data)} {viz} />
+	<Vega title="resporitory forks" data={transformResponse($GQL_Forks.data)} {viz} />
 {/if}

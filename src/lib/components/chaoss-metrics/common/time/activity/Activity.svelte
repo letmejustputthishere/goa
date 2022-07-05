@@ -1,18 +1,18 @@
 <script lang="ts">
-	import { KQL_Commits } from '$lib/graphql/_kitql/graphqlStores';
+	import { GQL_Commits } from '$houdini';
 
-	KQL_Commits.query({ variables: { name: 'ic', owner: 'dfinity' } });
+	GQL_Commits.fetch({ variables: { name: 'ic', owner: 'dfinity' } });
 </script>
 
-{$KQL_Commits.isFetching ? 'Loading ...' : ''}
+{$GQL_Commits.isFetching ? 'Loading ...' : ''}
 
-{#await $KQL_Commits.data}
+{#await $GQL_Commits.data}
 	Loading
 {:then data}
 	{JSON.stringify(data)}
 {/await}
 
-{#each $KQL_Commits.data?.repository.defaultBranchRef.target.__typename === 'Commit' ? $KQL_Commits.data?.repository.defaultBranchRef.target.history.nodes : [] || [] as commit}
+{#each $GQL_Commits.data?.repository.defaultBranchRef.target.__typename === 'Commit' ? $GQL_Commits.data?.repository.defaultBranchRef.target.history.nodes : [] || [] as commit}
 	<div>
 		{commit.committer.name}
 		{commit.committedDate}

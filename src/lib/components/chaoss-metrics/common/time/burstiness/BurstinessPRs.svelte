@@ -1,19 +1,19 @@
 <script lang="ts">
 	import Vega from '$lib/components/Vega.svelte';
-	import { KQL_BurstinessPRs } from '$lib/graphql/_kitql/graphqlStores';
-	import type { BurstinessPRsQuery } from '$lib/graphql/_kitql/graphqlTypes';
+	import { GQL_BurstinessPRs } from '$houdini';
+	import type { BurstinessPRs$result } from '$houdini';
 	import KitQlInfo from '@kitql/all-in/KitQLInfo.svelte';
 	import * as vl from 'vega-lite-api';
 
 	export let repo, owner, date;
 
 	$: if (date !== undefined) {
-		KQL_BurstinessPRs.query({
+		GQL_BurstinessPRs.fetch({
 			variables: { querystring: `repo:${owner}/${repo} is:pr created:>${date}` }
 		});
 	}
 
-	function transformResponse(data: BurstinessPRsQuery): { [key: string]: string | number }[] {
+	function transformResponse(data: BurstinessPRs$result): { [key: string]: string | number }[] {
 		return data.search.edges
 			.map(({ node }) => {
 				if (node.__typename === 'PullRequest') {
@@ -38,10 +38,10 @@
 </script>
 
 <!-- before this is rendered, the query has already been sent and thus state is `isFetching` -->
-{#if $KQL_BurstinessPRs.isFetching}
+{#if $GQL_BurstinessPRs.isFetching}
 	Loading
-{:else if $KQL_BurstinessPRs.errors}
-	{JSON.stringify($KQL_BurstinessPRs.errors)}
-{:else if $KQL_BurstinessPRs.data}
-	<Vega title="pr burstiness" data={transformResponse($KQL_BurstinessPRs.data)} {viz} />
+{:else if $GQL_BurstinessPRs.errors}
+	{JSON.stringify($GQL_BurstinessPRs.errors)}
+{:else if $GQL_BurstinessPRs.data}
+	<Vega title="pr burstiness" data={transformResponse($GQL_BurstinessPRs.data)} {viz} />
 {/if}

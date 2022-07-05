@@ -1,17 +1,17 @@
 <script lang="ts">
 	import Vega from '$lib/components/Vega.svelte';
-	import { KQL_BurstinessIssues } from '$lib/graphql/_kitql/graphqlStores';
-	import type { BurstinessIssuesQuery } from '$lib/graphql/_kitql/graphqlTypes';
+	import { GQL_BurstinessIssues } from '$houdini';
+	import type { BurstinessIssues$result } from '$houdini';
 	import { KitQLInfo } from '@kitql/all-in';
 	import * as vl from 'vega-lite-api';
 
 	export let repo, owner, date;
 
 	$: if (date !== undefined) {
-		KQL_BurstinessIssues.query({ variables: { name: repo, owner, date } });
+		GQL_BurstinessIssues.fetch({ variables: { name: repo, owner, date } });
 	}
 
-	function transformResponse(data: BurstinessIssuesQuery): { [key: string]: string | number }[] {
+	function transformResponse(data: BurstinessIssues$result): { [key: string]: string | number }[] {
 		return data.repository.issues.edges.map(({ node }) => ({
 			date: node.createdAt.split('T')[0],
 			url: node.url
@@ -30,10 +30,10 @@
 </script>
 
 <!-- before this is rendered, the query has already been sent and thus state is `isFetching` -->
-{#if $KQL_BurstinessIssues.isFetching}
+{#if $GQL_BurstinessIssues.isFetching}
 	Loading
-{:else if $KQL_BurstinessIssues.errors}
-	{JSON.stringify($KQL_BurstinessIssues.errors)}
-{:else if $KQL_BurstinessIssues.data}
-	<Vega title="issue burstiness" data={transformResponse($KQL_BurstinessIssues.data)} {viz} />
+{:else if $GQL_BurstinessIssues.errors}
+	{JSON.stringify($GQL_BurstinessIssues.errors)}
+{:else if $GQL_BurstinessIssues.data}
+	<Vega title="issue burstiness" data={transformResponse($GQL_BurstinessIssues.data)} {viz} />
 {/if}
