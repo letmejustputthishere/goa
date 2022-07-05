@@ -1,16 +1,16 @@
 <script lang="ts">
 	import Vega from '$lib/components/Vega.svelte';
-	import { KQL_Close } from '$lib/graphql/_kitql/graphqlStores';
-	import type { CloseQuery } from '$lib/graphql/_kitql/graphqlTypes';
+	import { GQL_Close } from '$houdini';
+	import type { Close$result } from '$houdini';
 	import * as vl from 'vega-lite-api';
 
 	export let repo, owner;
 
-	KQL_Close.query({
+	GQL_Close.fetch({
 		variables: { querystring: `repo:${owner}/${repo} is:issue created:2010-12-30..2018-01-01` }
 	});
 
-	function transformResponse(data: CloseQuery): { [key: string]: string | number }[] {
+	function transformResponse(data: Close$result): { [key: string]: string | number }[] {
 		return data.search.edges
 			.map(({ node }) => {
 				if (node.__typename === 'Issue' && node.closedAt) {
@@ -44,10 +44,10 @@
 </script>
 
 <!-- before this is rendered, the query has already been sent and thus state is `isFetching` -->
-{#if $KQL_Close.isFetching}
+{#if $GQL_Close.isFetching}
 	Loading
-{:else if $KQL_Close.errors}
-	{JSON.stringify($KQL_Close.errors)}
+{:else if $GQL_Close.errors}
+	{JSON.stringify($GQL_Close.errors)}
 {:else}
-	<Vega title="time to close" data={transformResponse($KQL_Close.data)} {viz} />
+	<Vega title="time to close" data={transformResponse($GQL_Close.data)} {viz} />
 {/if}
