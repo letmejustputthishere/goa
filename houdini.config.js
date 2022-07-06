@@ -16,7 +16,6 @@ const config = {
 			},
 			// turn the value into something the API can use
 			marshal(date) {
-				console.log(date);
 				return date.toISOString();
 			}
 		},
