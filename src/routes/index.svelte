@@ -8,7 +8,7 @@
 
 	// let source: { repo: string; owner: string } = null;
 	let source: { repo: string; owner: string } = { repo: 'kit', owner: 'sveltejs' };
-	let date: string;
+	let date: Date;
 </script>
 
 <div class="flex flex-col justify-center m-6">

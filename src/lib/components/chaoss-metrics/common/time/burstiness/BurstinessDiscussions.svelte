@@ -20,7 +20,7 @@
 			.map(({ node }) => {
 				if (node.__typename === 'Discussion') {
 					return {
-						date: node.createdAt.split('T')[0],
+						date: node.createdAt.toISOString(),
 						url: node.url
 					};
 				}
