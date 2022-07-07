@@ -8,10 +8,11 @@ export default async (req: VercelRequest, res: VercelResponse) => {
 	};
 
 	if (req.method === 'POST') {
+		const body = JSON.parse(req.body);
 		const { token, scopes } = await createToken({
 			...credentials,
-			state: req.body.state as string,
-			code: req.body.code as string
+			state: body.state as string,
+			code: body.code as string
 		});
 
 		return res.json({ token, scopes });

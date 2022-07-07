@@ -5,11 +5,30 @@
 	import Close from '$lib/components/chaoss-metrics/common/time/time-to-close/Close.svelte';
 	import DateRangeSelector from '$lib/components/DateRangeSelector.svelte';
 	import GitHubUrlInput from '$lib/components/GitHubUrlInput.svelte';
+	import { onMount } from 'svelte';
+	import { exchangeCodeForToken, setup, sayMyName } from '../oauth';
 
 	// let source: { repo: string; owner: string } = null;
 	let source: { repo: string; owner: string } = { repo: 'kit', owner: 'sveltejs' };
 	let date: Date;
+
+	onMount(async () => {
+		const searchParams = new URLSearchParams(location.search);
+
+		const params: { [key: string]: string } = {};
+		for (const [key, value] of searchParams.entries()) {
+			params[key] = value;
+		}
+
+		if (params.code) {
+			await exchangeCodeForToken(params.code);
+		} else {
+			await setup();
+		}
+	});
 </script>
+
+<button class="btn" on:click={sayMyName}>say my name</button>
 
 <div class="flex flex-col justify-center m-6">
 	<div class="flex justify-center">
