@@ -6,11 +6,11 @@
 	let dates = [
 		{
 			label: '3 months',
-			value: moment().subtract(3, 'months').format()
+			value: moment().subtract(3, 'months').toDate()
 		},
 		{
 			label: '6 months',
-			value: moment().subtract(6, 'months').format()
+			value: moment().subtract(6, 'months').toDate()
 		}
 	];
 </script>

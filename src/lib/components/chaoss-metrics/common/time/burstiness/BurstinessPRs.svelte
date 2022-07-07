@@ -18,7 +18,7 @@
 			.map(({ node }) => {
 				if (node.__typename === 'PullRequest') {
 					return {
-						date: node.createdAt.split('T')[0],
+						date: node.createdAt.toISOString(),
 						url: node.url
 					};
 				}

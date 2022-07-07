@@ -13,7 +13,7 @@
 
 	function transformResponse(data: BurstinessIssues$result): { [key: string]: string | number }[] {
 		return data.repository.issues.edges.map(({ node }) => ({
-			date: node.createdAt.split('T')[0],
+			date: node.createdAt.toISOString(),
 			url: node.url
 		}));
 	}

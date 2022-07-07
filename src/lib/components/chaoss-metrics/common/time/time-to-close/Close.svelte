@@ -15,8 +15,8 @@
 			.map(({ node }) => {
 				if (node.__typename === 'Issue' && node.closedAt) {
 					return {
-						created: node.createdAt,
-						closed: node.closedAt,
+						created: node.createdAt.toISOString(),
+						closed: node.closedAt.toISOString(),
 						url: node.url,
 						duration:
 							Math.abs(new Date(node.createdAt).getTime() - new Date(node.closedAt).getTime()) /
