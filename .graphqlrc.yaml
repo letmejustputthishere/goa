@@ -2,8 +2,9 @@
 projects:
   default:
     schema:
-      - ./src/**/*.graphql
-      - ./$houdini/graphql/schema.gql
+      - ./src/lib/graphql/schema.graphql
+      # - ./src/**/*.graphql
+      - ./$houdini/graphql/schema.graphql
     documents:
       - ./src/**/*.gql
       - ./$houdini/graphql/documents.gql
