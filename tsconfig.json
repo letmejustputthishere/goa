@@ -9,7 +9,6 @@
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"preserveValueImports": false,
-		// "strict": true,
 		"paths": {
 			"$lib": ["src/lib"],
 			"$lib/*": ["src/lib/*"],

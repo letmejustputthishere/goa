@@ -1,3 +1,6 @@
+import { store } from './store';
+import { get } from 'svelte/store';
+
 export async function setup() {
 	const token = localStorage.getItem('token');
 	if (!token) return logout();
@@ -6,7 +9,7 @@ export async function setup() {
 	login(token);
 
 	// ... but we check just to be sure
-	fetch(`GET ${location.origin}/api/github/oauth/token`, {
+	fetch(`/api/github/oauth/token`, {
 		headers: {
 			authorization: `token ${token}`
 		}
@@ -36,30 +39,20 @@ export async function exchangeCodeForToken(code: string) {
 }
 
 function login(token) {
-	document.body.dataset.state = 'main';
 	localStorage.setItem('token', token);
+	store.set({ isAuthed: true });
 }
 
-export async function logout(options: { [key: string]: string } = {}) {
+export async function logout(options: { [key: string]: boolean } = {}) {
 	if (options.invalidateToken) {
 		await fetch(`${location.origin}/api/github/oauth/token`, {
 			method: 'DELETE',
 			headers: {
-				authorization: localStorage.getItem('token')
+				authorization: `token ${localStorage.getItem('token')}`
 			}
 		});
 	}
 
-	document.body.dataset.state = 'login';
 	localStorage.clear();
-}
-
-export async function sayMyName() {
-	const response = await fetch('/user', {
-		headers: {
-			authorization: localStorage.getItem('token')
-		}
-	});
-	const data = await response.json();
-	alert(data.name);
+	store.set({ isAuthed: false });
 }

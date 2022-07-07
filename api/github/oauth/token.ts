@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createToken, checkToken, resetToken, deleteToken } from '@octokit/oauth-app';
 
@@ -18,7 +19,8 @@ export default async (req: VercelRequest, res: VercelResponse) => {
 		return res.json({ token, scopes });
 	}
 
-	const token = (req.headers.authorization || '').substr('token '.length);
+	const token = (req.headers.authorization || '').substring('token '.length);
+	// const token = req.headers.authorization || '';
 	if (!token) {
 		res.status(400);
 		return res.json({

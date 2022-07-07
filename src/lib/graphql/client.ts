@@ -14,7 +14,7 @@ async function fetchQuery({
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-			'Authorization': `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`
+			Authorization: `Bearer ${localStorage.getItem('token')}`
 		},
 		body: JSON.stringify({
 			query: text,

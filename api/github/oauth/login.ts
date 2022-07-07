@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { getAuthorizationUrl } from '@octokit/oauth-app';
 
