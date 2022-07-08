@@ -3,25 +3,22 @@
 	import { GQL_Forks } from '$houdini';
 	import type { Forks$result } from '$houdini';
 	import * as vl from 'vega-lite-api';
-	import KitQlInfo from '@kitql/all-in/KitQLInfo.svelte';
-	import { get } from 'svelte/store';
 	import { getHoudiniContext } from '$houdini';
 	import { onMount } from 'svelte';
 
 	export let repo, owner;
-	let loadingNextPage = true;
+	let loading = true;
 
 	const context = getHoudiniContext();
 
-	function loadMore() {
-		GQL_Forks.fetch({ variables: { name: repo, owner } });
-		console.log('load');
-		console.log($GQL_Forks.pageInfo.hasNextPage);
-		if ($GQL_Forks.pageInfo.hasNextPage) {
+	async function load() {
+		console.log($GQL_Forks.pageInfo[0]);
+		if ($GQL_Forks.pageInfo[0].hasNextPage) {
 			console.log('load');
-			GQL_Forks.loadNextPage(context);
+			await GQL_Forks.loadNextPage(context);
+			load();
 		}
-		loadingNextPage = false;
+		loading = false;
 	}
 
 	function transformResponse(data: Forks$result): { [key: string]: string | number }[] {
@@ -43,10 +40,11 @@
 			vl.y().count().axis({ title: 'Forks' })
 		);
 
-	onMount(loadMore);
+	onMount(async () => {
+		await GQL_Forks.fetch({ variables: { name: repo, owner } });
+		await load();
+	});
 </script>
-
-<button on:click={loadMore}>load more</button>
 
 <!-- <KitQlInfo store={GQL_Forks} /> -->
 <!-- before this is rendered, the query has already been sent and thus state is `isFetching` -->
@@ -54,6 +52,6 @@
 	Loading
 {:else if $GQL_Forks.errors}
 	{JSON.stringify($GQL_Forks.errors)}
-{:else if !loadingNextPage}
+{:else if !loading}
 	<Vega title="resporitory forks" data={transformResponse($GQL_Forks.data)} {viz} />
 {/if}
