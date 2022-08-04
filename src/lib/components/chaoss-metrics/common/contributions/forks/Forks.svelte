@@ -6,28 +6,31 @@
 	import { getHoudiniContext } from '$houdini';
 	import { onMount } from 'svelte';
 
-	export let repo, owner;
+	export let repo, owner, date;
 	let loading = true;
 
 	const context = getHoudiniContext();
 
 	async function load() {
-		console.log($GQL_Forks.pageInfo[0]);
-		if ($GQL_Forks.pageInfo[0].hasNextPage) {
-			console.log('load');
+		if (
+			$GQL_Forks.pageInfo[0].hasNextPage &&
+			$GQL_Forks.data.repository.forks.edges.at(-1).node.createdAt > date
+		) {
 			await GQL_Forks.loadNextPage(context);
-			load();
+			await load();
 		}
 		loading = false;
 	}
 
 	function transformResponse(data: Forks$result): { [key: string]: string | number }[] {
-		return data.repository.forks.edges.map(({ node }) => {
-			return {
-				date: node.createdAt.toISOString(),
-				url: node.url
-			};
-		});
+		return data.repository.forks.edges
+			.filter(({ node }) => node.createdAt > date)
+			.map(({ node }) => {
+				return {
+					date: node.createdAt.toISOString(),
+					url: node.url
+				};
+			});
 	}
 
 	const viz = vl
@@ -46,12 +49,12 @@
 	});
 </script>
 
-<!-- <KitQlInfo store={GQL_Forks} /> -->
-<!-- before this is rendered, the query has already been sent and thus state is `isFetching` -->
-{#if $GQL_Forks.isFetching}
-	Loading
+{#if loading || $GQL_Forks.isFetching}
+	<div class="flex items-center justify-center mt-6">
+		<progress class="progress w-56" />
+	</div>
 {:else if $GQL_Forks.errors}
 	{JSON.stringify($GQL_Forks.errors)}
-{:else if !loading}
+{:else if $GQL_Forks.data && !loading}
 	<Vega title="resporitory forks" data={transformResponse($GQL_Forks.data)} {viz} />
 {/if}

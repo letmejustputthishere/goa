@@ -42,7 +42,7 @@
 			<GitHubUrlInput bind:source />
 		</div>
 		{#if source}
-			<Forks repo={source.repo} owner={source.owner} />
+			<Forks repo={source.repo} owner={source.owner} {date}/>
 			<Languages repo={source.repo} owner={source.owner} />
 			<Close repo={source.repo} owner={source.owner} />
 			<Burstiness repo={source.repo} owner={source.owner} {date} />

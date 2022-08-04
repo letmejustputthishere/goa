@@ -8,7 +8,7 @@
 	export let viz;
 	export let title;
 
-	function createChart(node: HTMLDivElement) {
+	function createChart(node: HTMLDivElement, chartArguments) {
 		const options = {
 			config: {
 				// vega-lite default configuration
@@ -30,8 +30,8 @@
 
 		vl.register(vega, vegaLite, options);
 
-		viz
-			.data(data)
+		chartArguments.viz
+			.data(chartArguments.data)
 			.width(node.clientWidth)
 			.height(node.clientHeight)
 			.autosize({ type: 'fit', contains: 'padding', resize: true })
@@ -45,5 +45,5 @@
 
 <div class="card bg-white m-5">
 	<div class="text-center mt-4">{title}</div>
-	<div use:createChart class="m-5 min-h-[200px]" />
+	<div use:createChart={{ viz, data }} class="m-5 min-h-[200px]" />
 </div>
