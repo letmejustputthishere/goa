@@ -40,6 +40,26 @@
 			.then((chart) => {
 				node.appendChild(chart);
 			});
+
+		return {
+			// this has to be returned form the action, otherwise it doesnt
+			// rerender when its arguments change
+			update(newChartArguments) {
+				chartArguments = newChartArguments;
+				// we have to remove the child from the node and then readd it
+				node.removeChild(node.firstChild);
+				chartArguments.viz
+					.data(chartArguments.data)
+					.width(node.clientWidth)
+					.height(node.clientHeight)
+					.autosize({ type: 'fit', contains: 'padding', resize: true })
+					// .background('grey')
+					.render()
+					.then((chart) => {
+						node.appendChild(chart);
+					});
+			}
+		};
 	}
 </script>
 

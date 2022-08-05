@@ -2,6 +2,7 @@
 	import Vega from '$lib/components/Vega.svelte';
 	import { GQL_Forks } from '$houdini';
 	import type { Forks$result } from '$houdini';
+	import moment from 'moment';
 	import * as vl from 'vega-lite-api';
 	import { getHoudiniContext } from '$houdini';
 	import { onMount } from 'svelte';
@@ -14,7 +15,8 @@
 	async function load() {
 		if (
 			$GQL_Forks.pageInfo[0].hasNextPage &&
-			$GQL_Forks.data.repository.forks.edges.at(-1).node.createdAt > date
+			$GQL_Forks.data.repository.forks.edges.at(-1).node.createdAt >
+				moment().subtract(6, 'months').toDate()
 		) {
 			await GQL_Forks.loadNextPage(context);
 			await load();
@@ -22,7 +24,7 @@
 		loading = false;
 	}
 
-	function transformResponse(data: Forks$result): { [key: string]: string | number }[] {
+	function transformResponse(data: Forks$result, date): { [key: string]: string | number }[] {
 		return data.repository.forks.edges
 			.filter(({ node }) => node.createdAt > date)
 			.map(({ node }) => {
@@ -56,5 +58,5 @@
 {:else if $GQL_Forks.errors}
 	{JSON.stringify($GQL_Forks.errors)}
 {:else if $GQL_Forks.data && !loading}
-	<Vega title="resporitory forks" data={transformResponse($GQL_Forks.data)} {viz} />
+	<Vega title="resporitory forks" data={transformResponse($GQL_Forks.data, date)} {viz} />
 {/if}

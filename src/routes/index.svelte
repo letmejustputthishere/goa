@@ -12,8 +12,8 @@
 
 	// let source: { repo: string; owner: string } = null;
 	let source: { repo: string; owner: string } = {
-		repo: 'fpd',
-		owner: 'flowerpowerdao'
+		repo: 'kit',
+		owner: 'sveltejs'
 	};
 	let date: Date;
 
