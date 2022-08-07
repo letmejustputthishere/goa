@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Vega from '$lib/components/Vega.svelte';
 	import { GQL_BurstinessIssues } from '$houdini';
+	import moment from 'moment';
 	import type { BurstinessIssues$result } from '$houdini';
 	import { getHoudiniContext } from '$houdini';
 	import * as vl from 'vega-lite-api';
@@ -10,13 +11,11 @@
 	let loading = true;
 	const context = getHoudiniContext();
 
-	// $: if (date !== undefined) {
-	// 	GQL_BurstinessIssues.fetch({ variables: { name: repo, owner, date } });
-	// }
 	async function load() {
 		if (
 			$GQL_BurstinessIssues.pageInfo[0].hasNextPage &&
-			$GQL_BurstinessIssues.data.repository.issues.edges.at(-1).node.createdAt > date
+			$GQL_BurstinessIssues.data.repository.issues.edges.at(-1).node.createdAt >
+				moment().subtract(6, 'months').toDate()
 		) {
 			await GQL_BurstinessIssues.loadNextPage(context);
 			await load();

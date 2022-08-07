@@ -3,10 +3,7 @@ query BurstinessDiscussions($querystring: String!, $endCursor: String = null) {
 		cost
 		limit
 	}
-	search(query: $querystring, type: DISCUSSION, first: 100, after: $endCursor) {
-		pageInfo {
-			endCursor # points to the last item
-		}
+	search(query: $querystring, type: DISCUSSION, first: 100, after: $endCursor) @paginate {
 		edges {
 			node {
 				__typename
