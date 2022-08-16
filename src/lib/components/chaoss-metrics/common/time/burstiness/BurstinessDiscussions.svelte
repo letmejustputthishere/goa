@@ -67,7 +67,6 @@
 	});
 </script>
 
-<!-- before this is rendered, the query has already been sent and thus state is `isFetching` -->
 {#if loading || $GQL_BurstinessDiscussions.isFetching}
 	<div class="flex items-center justify-center mt-6">
 		<progress class="progress w-56" />
