@@ -9,14 +9,13 @@
 
 	export let repo, owner, date;
 	let loading = true;
+
 	const context = getHoudiniContext();
 
 	async function load() {
-		if (
-			$GQL_BurstinessDiscussions.pageInfo[0].hasNextPage &&
-			$GQL_BurstinessDiscussions.data.search.edges.at(-1).node.createdAt >
-				moment().subtract(6, 'months').toDate()
-		) {
+		// we dont have to check the date here because the query only returns
+		// the last 6 months of data anyways
+		if ($GQL_BurstinessDiscussions.pageInfo[0].hasNextPage) {
 			await GQL_BurstinessDiscussions.loadNextPage(context);
 			await load();
 		}
@@ -24,18 +23,23 @@
 	}
 
 	function transformResponse(
-		data: BurstinessDiscussions$result
+		data: BurstinessDiscussions$result,
+		date
 	): { [key: string]: string | number }[] {
-		return data.search.edges
-			.map(({ node }) => {
-				if (node.__typename === 'Discussion') {
-					return {
-						date: node.createdAt.toISOString(),
-						url: node.url
-					};
-				}
-			})
-			.filter((elem) => elem !== undefined);
+		return (
+			data.search.edges
+				//  we filter for nodes that are created after the date we are interested in
+				.filter(({ node }) => node.createdAt > date)
+				.map(({ node }) => {
+					if (node.__typename === 'Discussion') {
+						return {
+							date: node.createdAt.toISOString(),
+							url: node.url
+						};
+					}
+				})
+				.filter((elem) => elem !== undefined)
+		);
 	}
 
 	const viz = vl
@@ -51,7 +55,12 @@
 	onMount(async () => {
 		await GQL_BurstinessDiscussions.fetch({
 			variables: {
-				querystring: `repo:${owner}/${repo} created:>${date}`
+				// we query for the last 6 months straight away and filter
+				// depending on the selected timespan in `transformResponse`
+				querystring: `repo:${owner}/${repo} created:>${moment()
+					.subtract(6, 'months')
+					.toDate()
+					.toISOString()}`
 			}
 		});
 		await load();
@@ -66,5 +75,9 @@
 {:else if $GQL_BurstinessDiscussions.errors}
 	{JSON.stringify($GQL_BurstinessDiscussions.errors)}
 {:else if $GQL_BurstinessDiscussions.data && !loading}
-	<Vega title="issue burstiness" data={transformResponse($GQL_BurstinessDiscussions.data)} {viz} />
+	<Vega
+		title="discussions burstiness"
+		data={transformResponse($GQL_BurstinessDiscussions.data, date)}
+		{viz}
+	/>
 {/if}

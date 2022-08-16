@@ -1,9 +1,9 @@
-query BurstinessDiscussions($querystring: String!, $endCursor: String = null) {
+query BurstinessDiscussions($querystring: String!) {
 	rateLimit {
 		cost
 		limit
 	}
-	search(query: $querystring, type: DISCUSSION, first: 100, after: $endCursor) @paginate {
+	search(query: $querystring, type: DISCUSSION, first: 100) @paginate {
 		edges {
 			node {
 				__typename
