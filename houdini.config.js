@@ -1,5 +1,6 @@
 /** @type {import('houdini').ConfigFile} */
 const config = {
+	cacheBufferSize: 100,
 	schemaPath: 'src/**/*.graphql',
 	// schemaPath: 'src/lib/graphql/schema.json',
 	sourceGlob: 'src/**/*.{svelte,gql}',

@@ -27,7 +27,6 @@
 		data: BurstinessPRs$result,
 		date
 	): { [key: string]: string | number }[] {
-		console.log(data);
 		return (
 			data.search.edges
 				//  we filter for nodes that are created after the date we are interested in

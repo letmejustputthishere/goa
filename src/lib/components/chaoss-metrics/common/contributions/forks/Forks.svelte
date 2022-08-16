@@ -26,6 +26,7 @@
 
 	function transformResponse(data: Forks$result, date): { [key: string]: string | number }[] {
 		return data.repository.forks.edges
+			.filter((node) => node)
 			.filter(({ node }) => node.createdAt > date)
 			.map(({ node }) => {
 				return {

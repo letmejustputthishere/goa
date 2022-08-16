@@ -3,11 +3,10 @@
 	import { GQL_Languages } from '$houdini';
 	import type { Languages$result } from '$houdini';
 	import * as vl from 'vega-lite-api';
+	import { onMount } from 'svelte';
 	import { KitQLInfo } from '@kitql/all-in';
 
 	export let repo, owner;
-
-	GQL_Languages.fetch({ variables: { name: repo, owner } });
 
 	function transformResponse(data: Languages$result): { [key: string]: string | number }[] {
 		return data.repository.languages.edges.map(({ node, size }) => ({
@@ -23,6 +22,10 @@
 			innerRadius: 50
 		})
 		.encode(vl.theta().fieldQ('size'), vl.color().field('name'));
+
+	onMount(async () => {
+		await GQL_Languages.fetch({ variables: { name: repo, owner } });
+	});
 </script>
 
 <!-- <KitQLInfo store={KQL_Languages} /> -->
@@ -32,6 +35,6 @@
 	Loading
 {:else if $GQL_Languages.errors}
 	{JSON.stringify($GQL_Languages.errors)}
-{:else}
+{:else if $GQL_Languages.data}
 	<Vega title="languages" data={transformResponse($GQL_Languages.data)} {viz} />
 {/if}

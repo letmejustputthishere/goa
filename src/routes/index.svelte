@@ -49,7 +49,7 @@
 			<Forks repo={source.repo} owner={source.owner} {date} />
 			<Collaborators repo={source.repo} owner={source.owner} />
 			<Languages repo={source.repo} owner={source.owner} />
-			<Close repo={source.repo} owner={source.owner} />
+			<Close repo={source.repo} owner={source.owner} {date} />
 			<Burstiness repo={source.repo} owner={source.owner} {date} />
 		{:else}
 			Please enter a GitHub URL

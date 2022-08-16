@@ -29,7 +29,6 @@
 				aggregation[index].count++;
 			}
 		});
-		console.log(aggregation);
 		return aggregation;
 	}
 
