@@ -9,6 +9,7 @@
 
 	export let repo, owner, date;
 	let loading = true;
+
 	const context = getHoudiniContext();
 
 	async function load() {
@@ -23,7 +24,10 @@
 		loading = false;
 	}
 
-	function transformResponse(data: BurstinessIssues$result): { [key: string]: string | number }[] {
+	function transformResponse(
+		data: BurstinessIssues$result,
+		date
+	): { [key: string]: string | number }[] {
 		return data.repository.issues.edges
 			.filter(({ node }) => node.createdAt > date)
 			.map(({ node }) => ({
@@ -56,5 +60,5 @@
 {:else if $GQL_BurstinessIssues.errors}
 	{JSON.stringify($GQL_BurstinessIssues.errors)}
 {:else if $GQL_BurstinessIssues.data && !loading}
-	<Vega title="issue burstiness" data={transformResponse($GQL_BurstinessIssues.data)} {viz} />
+	<Vega title="issue burstiness" data={transformResponse($GQL_BurstinessIssues.data, date)} {viz} />
 {/if}
