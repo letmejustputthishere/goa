@@ -10,6 +10,7 @@
 	import { store } from '../store';
 	import { onMount } from 'svelte';
 	import { exchangeCodeForToken, setup, logout } from '../oauth';
+	import FirstResponse from '$lib/components/chaoss-metrics/common/time/time-to-first-response/FirstResponse.svelte';
 
 	// let source: { repo: string; owner: string } = null;
 	let source: { repo: string; owner: string } = {
@@ -51,6 +52,7 @@
 			<Collaborators repo={source.repo} owner={source.owner} />
 			<Languages repo={source.repo} owner={source.owner} />
 			<Close repo={source.repo} owner={source.owner} {date} />
+			<FirstResponse repo={source.repo} owner={source.owner} {date} />
 			<Burstiness repo={source.repo} owner={source.owner} {date} />
 			<Activity repo={source.repo} owner={source.owner} {date} />
 		{:else}

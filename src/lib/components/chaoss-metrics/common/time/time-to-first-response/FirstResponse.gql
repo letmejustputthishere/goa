@@ -1,16 +1,9 @@
-query FirstResponse(
-	$querystring: String!
-	$endCursor: String = null
-	$timelineEndCursor: String = null
-) {
+query FirstResponse($querystring: String!) {
 	rateLimit {
 		cost
 		limit
 	}
-	search(query: $querystring, type: ISSUE, first: 1, after: $endCursor) {
-		pageInfo {
-			endCursor # points to the last item
-		}
+	search(query: $querystring, type: ISSUE, first: 100) @paginate {
 		issueCount
 		edges {
 			node {
@@ -34,7 +27,6 @@ query FirstResponse(
 							MARKED_AS_DUPLICATE_EVENT
 							MILESTONED_EVENT
 						]
-						after: $timelineEndCursor
 					) {
 						nodes {
 							... on AssignedEvent {

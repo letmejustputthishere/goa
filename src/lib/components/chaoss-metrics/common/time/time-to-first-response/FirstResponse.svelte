@@ -1,40 +1,107 @@
 <script lang="ts">
 	import { GQL_FirstResponse } from '$houdini';
+	import moment from 'moment';
+	import { onMount } from 'svelte';
+	import Vega from '$lib/components/Vega.svelte';
+	import type { FirstResponse$result } from '$houdini';
+	import { getHoudiniContext } from '$houdini';
+	import * as vl from 'vega-lite-api';
 
-	// this is run first on every render
-	GQL_FirstResponse.fetch({
-		variables: {
-			querystring: 'repo:python/cpython is:pr created:2010-12-30..2018-01-01',
-			endCursor: 'Y3Vyc29yOjIwMA=='
+	export let repo, owner, date;
+	let loading = true;
+
+	const context = getHoudiniContext();
+
+	async function load() {
+		// we dont have to check the date here because the query only returns
+		// the last 6 months of data anyways
+		if ($GQL_FirstResponse.pageInfo[0].hasNextPage) {
+			await GQL_FirstResponse.loadNextPage(context);
+			await load();
 		}
+		loading = false;
+	}
+
+	function transformResponse(
+		data: FirstResponse$result,
+		date
+	): { [key: string]: string | number }[] {
+		return (
+			data.search.edges
+				//  we filter for nodes that are created after the date we are interested in
+				.filter(({ node }) => node.createdAt > date)
+				.map(({ node }) => {
+					return {
+						created: node.createdAt.toISOString(),
+						duration:
+							Math.abs(
+								new Date(node.createdAt).getTime() -
+									new Date(node.timelineItems.nodes[0].createdAt).getTime()
+							) / 36e5
+					};
+				})
+				.filter((elem) => elem !== undefined)
+		);
+	}
+
+	const viz = vl.layer(
+		vl
+			.markBar({
+				tooltip: true
+			})
+			// .params(
+			// 	vl.param('year').value(2018).bind(vl.slider(2010, 2018, 1))
+			// vl.param('aggregation').value('mean').bind(vl.menu('mean', 'sum', 'count'))
+			// )
+			// .transform(vl.filter('year(datum.created) === year'))
+			.encode(
+				vl.x().timeYM('created').fieldO('created').axis({ title: 'Date', format: '%b %y' }),
+				vl.y().aggregate('mean').fieldQ('duration').axis({ title: 'mean (in hours)' })
+				// .axis({ title: vl.expr('aggregation') })
+			),
+		vl
+			.markRule({
+				tooltip: true
+			})
+			.encode(
+				vl.strokeWidth({ value: 4 }),
+				vl.y().aggregate('mean').fieldQ('duration'),
+				vl.color({ value: 'green' })
+			),
+		vl
+			.markRule({
+				tooltip: true,
+				strokeWidth: 4
+			})
+			.encode(vl.y().aggregate('median').fieldQ('duration'), vl.color({ value: 'red' }))
+	);
+
+	onMount(async () => {
+		await GQL_FirstResponse.fetch({
+			variables: {
+				// we query for the last 6 months straight away and filter
+				// depending on the selected timespan in `transformResponse`
+				querystring: `repo:${owner}/${repo} is:pr created:>${moment()
+					.subtract(6, 'months')
+					.toDate()
+					.toISOString()}`
+			}
+		});
+		await load();
+		console.log($GQL_FirstResponse.data);
 	});
 </script>
 
-<!-- before this is rendered, the query has already been sent and thus state is `isFetching` -->
-{#if $GQL_FirstResponse.isFetching}
-	Loading
+{#if loading || $GQL_FirstResponse.isFetching}
+	<div class="flex items-center justify-center mt-6">
+		<progress class="progress w-56" />
+	</div>
 {:else if $GQL_FirstResponse.errors}
 	{JSON.stringify($GQL_FirstResponse.errors)}
-{:else}
-	{@const data = $GQL_FirstResponse.data}
-	<div class="text-2xl text-red-500 text-center">
-		pull requests (add lables not from author and remove bot interactions)
-	</div>
-	{data.search.issueCount}
-	{data.search.edges.length}
-	{#each data.search.edges || [] as pr}
-		{#if pr.node.__typename === 'PullRequest'}
-			<div>
-				<div>created: {pr.node.createdAt}</div>
-				<a href={pr.node.url}>link</a>
-				{#each pr.node.timelineItems.nodes as timelineItem}
-					{#if timelineItem.__typename === ('AssignedEvent' || 'ClosedEvent' || 'IssueComment' || 'MergedEvent' || 'PullRequestReview' || 'ReadyForReviewEvent' || 'ReviewRequestedEvent' || 'MarkedAsDuplicateEvent' || 'MilestonedEvent')}
-						<div>{timelineItem.__typename}</div>
-						<div>{timelineItem.createdAt}</div>
-						<br />
-					{/if}
-				{/each}
-			</div>
-		{/if}
-	{/each}
+{:else if $GQL_FirstResponse.data && !loading}
+	<Vega
+		title="time to first response"
+		data={transformResponse($GQL_FirstResponse.data, date)}
+		{viz}
+	/>
 {/if}
