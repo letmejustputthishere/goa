@@ -43,20 +43,37 @@
 		);
 	}
 
-	const viz = vl
-		.markBar({
-			tooltip: true
-		})
-		// .params(
-		// 	vl.param('year').value(2018).bind(vl.slider(2010, 2018, 1))
-		// vl.param('aggregation').value('mean').bind(vl.menu('mean', 'sum', 'count'))
-		// )
-		// .transform(vl.filter('year(datum.created) === year'))
-		.encode(
-			vl.x().timeYM('created').fieldO('created').axis({ title: 'Date', format: '%b %y' }),
-			vl.y().aggregate('median').fieldQ('duration').axis({ title: 'median (in days)' })
-			// .axis({ title: vl.expr('aggregation') })
-		);
+	const viz = vl.layer(
+		vl
+			.markBar({
+				tooltip: true
+			})
+			// .params(
+			// 	vl.param('year').value(2018).bind(vl.slider(2010, 2018, 1))
+			// vl.param('aggregation').value('mean').bind(vl.menu('mean', 'sum', 'count'))
+			// )
+			// .transform(vl.filter('year(datum.created) === year'))
+			.encode(
+				vl.x().timeYM('created').fieldO('created').axis({ title: 'Date', format: '%b %y' }),
+				vl.y().aggregate('median').fieldQ('duration').axis({ title: 'median (in days)' })
+				// .axis({ title: vl.expr('aggregation') })
+			),
+		vl
+			.markRule({
+				tooltip: true
+			})
+			.encode(
+				vl.strokeWidth({ value: 4 }),
+				vl.y().aggregate('mean').fieldQ('duration'),
+				vl.color({ value: 'green' })
+			),
+		vl
+			.markRule({
+				tooltip: true,
+				strokeWidth: 4
+			})
+			.encode(vl.y().aggregate('median').fieldQ('duration'), vl.color({ value: 'red' }))
+	);
 
 	onMount(async () => {
 		await GQL_Close.fetch({

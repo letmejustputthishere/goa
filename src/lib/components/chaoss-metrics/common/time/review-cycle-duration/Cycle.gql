@@ -4,7 +4,6 @@ query Cycle($owner: String!, $name: String!) {
 			edges {
 				node {
 					createdAt
-					closedAt
 					closed
 					state
 					closedAt
