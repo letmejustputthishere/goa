@@ -4,14 +4,12 @@ query Commits($owner: String!, $name: String!) {
 			name
 			target {
 				... on Commit {
-					history {
-						nodes {
-							committedDate
-							committer {
-								name
+					history(first: 100) @paginate {
+						edges {
+							node {
+								committedDate
 							}
 						}
-						totalCount
 					}
 				}
 			}
