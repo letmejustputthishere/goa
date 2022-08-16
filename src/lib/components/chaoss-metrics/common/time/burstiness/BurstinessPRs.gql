@@ -1,12 +1,9 @@
-query BurstinessPRs($querystring: String!, $endCursor: String = null) {
+query BurstinessPRs($querystring: String!) {
 	rateLimit {
 		cost
 		limit
 	}
-	search(query: $querystring, type: ISSUE, first: 100, after: $endCursor) {
-		pageInfo {
-			endCursor # points to the last item
-		}
+	search(query: $querystring, type: ISSUE, first: 100) @paginate {
 		edges {
 			node {
 				__typename

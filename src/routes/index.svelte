@@ -4,13 +4,17 @@
 	import Burstiness from '$lib/components/chaoss-metrics/common/time/burstiness/Burstiness.svelte';
 	import Close from '$lib/components/chaoss-metrics/common/time/time-to-close/Close.svelte';
 	import DateRangeSelector from '$lib/components/DateRangeSelector.svelte';
+	import Collaborators from '$lib/components/chaoss-metrics/common/contributions/collaborators/Collaborators.svelte';
 	import GitHubUrlInput from '$lib/components/GitHubUrlInput.svelte';
 	import { store } from '../store';
 	import { onMount } from 'svelte';
 	import { exchangeCodeForToken, setup, logout } from '../oauth';
 
 	// let source: { repo: string; owner: string } = null;
-	let source: { repo: string; owner: string } = { repo: 'kit', owner: 'sveltejs' };
+	let source: { repo: string; owner: string } = {
+		repo: 'kit',
+		owner: 'sveltejs'
+	};
 	let date: Date;
 
 	onMount(async () => {
@@ -42,9 +46,10 @@
 			<GitHubUrlInput bind:source />
 		</div>
 		{#if source}
-			<Forks repo={source.repo} owner={source.owner} />
+			<Forks repo={source.repo} owner={source.owner} {date} />
+			<Collaborators repo={source.repo} owner={source.owner} />
 			<Languages repo={source.repo} owner={source.owner} />
-			<Close repo={source.repo} owner={source.owner} />
+			<Close repo={source.repo} owner={source.owner} {date} />
 			<Burstiness repo={source.repo} owner={source.owner} {date} />
 		{:else}
 			Please enter a GitHub URL

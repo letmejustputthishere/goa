@@ -8,7 +8,7 @@
 	export let viz;
 	export let title;
 
-	function createChart(node: HTMLDivElement) {
+	function createChart(node: HTMLDivElement, chartArguments) {
 		const options = {
 			config: {
 				// vega-lite default configuration
@@ -30,8 +30,8 @@
 
 		vl.register(vega, vegaLite, options);
 
-		viz
-			.data(data)
+		chartArguments.viz
+			.data(chartArguments.data)
 			.width(node.clientWidth)
 			.height(node.clientHeight)
 			.autosize({ type: 'fit', contains: 'padding', resize: true })
@@ -40,10 +40,30 @@
 			.then((chart) => {
 				node.appendChild(chart);
 			});
+
+		return {
+			// this has to be returned form the action, otherwise it doesnt
+			// rerender when its arguments change
+			update(newChartArguments) {
+				chartArguments = newChartArguments;
+				// we have to remove the child from the node and then readd it
+				node.removeChild(node.firstChild);
+				chartArguments.viz
+					.data(chartArguments.data)
+					.width(node.clientWidth)
+					.height(node.clientHeight)
+					.autosize({ type: 'fit', contains: 'padding', resize: true })
+					// .background('grey')
+					.render()
+					.then((chart) => {
+						node.appendChild(chart);
+					});
+			}
+		};
 	}
 </script>
 
 <div class="card bg-white m-5">
 	<div class="text-center mt-4">{title}</div>
-	<div use:createChart class="m-5 min-h-[200px]" />
+	<div use:createChart={{ viz, data }} class="m-5 min-h-[200px]" />
 </div>

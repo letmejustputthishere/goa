@@ -1,16 +1,12 @@
-query Collaborators(
-	$name: String!
-	$owner: String!
-	$affiliation: CollaboratorAffiliation!
-	$withName: Boolean = false
-) {
+query Collaborators($name: String!, $owner: String!) {
 	repository(name: $name, owner: $owner) {
-		collaborators(first: 100, affiliation: $affiliation) {
-			nodes {
-				# login is only included when $withName is true
-				login @include(if: $withName)
-				name
-				location
+		collaborators(first: 100, affiliation: ALL) @paginate {
+			edges {
+				node {
+					# login is only included when $withName is true
+					# login @include(if: $withName)
+					location
+				}
 			}
 		}
 	}

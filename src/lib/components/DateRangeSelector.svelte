@@ -11,7 +11,7 @@
 		{
 			label: '6 months',
 			value: moment().subtract(6, 'months').toDate()
-		}
+		},
 	];
 </script>
 

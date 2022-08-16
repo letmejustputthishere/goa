@@ -1,3 +1,7 @@
+# development
+
+- we rely on vercel serverless functions to authenticate to github, thus we have to use `vercel dev -l 127.0.0.1:3000` for local development instead of `yarn dev`
+
 # query optimization stragies
 
 - query the top level objects of the graph first (e.q repositories) and get their ids and use cursors if needed. leverage the use of `totalCounts` to check in advance which subqueries will need pagination.
