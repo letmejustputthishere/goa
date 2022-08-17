@@ -1,6 +1,10 @@
 # development
 
-- we rely on vercel serverless functions to authenticate to github, thus we have to use `vercel dev -l 127.0.0.1:3000` for local development instead of `yarn dev`
+- we rely on vercel serverless functions to authenticate to github, thus we have to use `vercel dev -l 127.0.0.1:3000` for local development instead of `yarn dev`. make sure the correct callback url is set in the github application settings.
+
+# deployment
+
+- run `vercel --prod`. make sure the correct callback url is set in the github application settings.
 
 # query optimization stragies
 
