@@ -28,17 +28,33 @@
 	): { [key: string]: string | number }[] {
 		return (
 			data.search.edges
+				//  we filter nodes that dont have timeline items yet
+				.filter(({ node }) => node.timelineItems.nodes[0])
 				//  we filter for nodes that are created after the date we are interested in
 				.filter(({ node }) => node.createdAt > date)
 				.map(({ node }) => {
-					return {
+					let firstResponse = node.timelineItems.nodes
+						//  we filter timeline items that have no author or actor
+						.filter((node) => ('author' in node ? node.author : node.actor))
+						// we filter timeline items that are created by bots
+						.find((timelineItem) => {
+							let author =
+								'author' in timelineItem
+									? timelineItem.author.__typename
+									: timelineItem.actor.__typename;
+							return author === 'User';
+						});
+					if (!firstResponse) {
+						return;
+					}
+					let newNode = {
 						created: node.createdAt.toISOString(),
 						duration:
 							Math.abs(
-								new Date(node.createdAt).getTime() -
-									new Date(node.timelineItems.nodes[0].createdAt).getTime()
+								new Date(node.createdAt).getTime() - new Date(firstResponse.createdAt).getTime()
 							) / 36e5
 					};
+					return newNode;
 				})
 				.filter((elem) => elem !== undefined)
 		);
@@ -88,7 +104,6 @@
 			}
 		});
 		await load();
-		console.log($GQL_FirstResponse.data);
 	});
 </script>
 

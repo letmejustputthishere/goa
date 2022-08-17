@@ -15,7 +15,7 @@ query FirstResponse($querystring: String!) {
 						login
 					}
 					timelineItems(
-						first: 1
+						first: 10
 						itemTypes: [
 							ASSIGNED_EVENT
 							CLOSED_EVENT
@@ -32,10 +32,16 @@ query FirstResponse($querystring: String!) {
 							... on AssignedEvent {
 								__typename
 								createdAt
+								actor {
+									__typename
+								}
 							}
 							... on ClosedEvent {
 								__typename
 								createdAt
+								actor {
+									__typename
+								}
 							}
 							... on IssueComment {
 								__typename
@@ -47,26 +53,37 @@ query FirstResponse($querystring: String!) {
 							... on MergedEvent {
 								__typename
 								createdAt
+								actor {
+									__typename
+								}
 							}
 							... on PullRequestReview {
 								__typename
 								createdAt
+								author {
+									__typename
+								}
 							}
 							... on ReadyForReviewEvent {
 								__typename
 								createdAt
+								actor {
+									__typename
+								}
 							}
 							... on ReviewRequestedEvent {
 								__typename
 								createdAt
+								actor {
+									__typename
+								}
 							}
 							... on MarkedAsDuplicateEvent {
 								__typename
 								createdAt
-							}
-							... on MilestonedEvent {
-								__typename
-								createdAt
+								actor {
+									__typename
+								}
 							}
 						}
 					}
