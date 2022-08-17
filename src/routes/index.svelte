@@ -12,11 +12,11 @@
 	import { exchangeCodeForToken, setup, logout } from '../oauth';
 	import FirstResponse from '$lib/components/chaoss-metrics/common/time/time-to-first-response/FirstResponse.svelte';
 
-	// let source: { repo: string; owner: string } = null;
-	let source: { repo: string; owner: string } = {
-		repo: 'kit',
-		owner: 'sveltejs'
-	};
+	let source: { repo: string; owner: string } = null;
+	// let source: { repo: string; owner: string } = {
+	// 	repo: 'kit',
+	// 	owner: 'sveltejs'
+	// };
 	let date: Date;
 
 	onMount(async () => {
