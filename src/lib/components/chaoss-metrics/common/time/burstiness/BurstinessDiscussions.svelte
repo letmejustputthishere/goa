@@ -6,6 +6,7 @@
 	import { getHoudiniContext } from '$houdini';
 	import { onMount } from 'svelte';
 	import * as vl from 'vega-lite-api';
+	import Graph from '$lib/components/Graph.svelte';
 
 	export let repo, owner, date;
 	let loading = true;
@@ -67,16 +68,11 @@
 	});
 </script>
 
-{#if loading || $GQL_BurstinessDiscussions.isFetching}
-	<div class="flex items-center justify-center mt-6">
-		<progress class="progress w-56" />
-	</div>
-{:else if $GQL_BurstinessDiscussions.errors}
-	{JSON.stringify($GQL_BurstinessDiscussions.errors)}
-{:else if $GQL_BurstinessDiscussions.data && !loading}
-	<Vega
-		title="discussions burstiness"
-		data={transformResponse($GQL_BurstinessDiscussions.data, date)}
-		{viz}
-	/>
-{/if}
+<Graph
+	title="discussions burstiness"
+	{date}
+	store={GQL_BurstinessDiscussions}
+	{viz}
+	{loading}
+	{transformResponse}
+/>

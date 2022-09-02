@@ -6,6 +6,7 @@
 	import * as vl from 'vega-lite-api';
 	import { getHoudiniContext } from '$houdini';
 	import { onMount } from 'svelte';
+	import Graph from '$lib/components/Graph.svelte';
 
 	export let repo, owner, date;
 	let loading = true;
@@ -52,12 +53,4 @@
 	});
 </script>
 
-{#if loading || $GQL_Forks.isFetching}
-	<div class="flex items-center justify-center mt-6">
-		<progress class="progress w-56" />
-	</div>
-{:else if $GQL_Forks.errors}
-	{JSON.stringify($GQL_Forks.errors)}
-{:else if $GQL_Forks.data && !loading}
-	<Vega title="resporitory forks" data={transformResponse($GQL_Forks.data, date)} {viz} />
-{/if}
+<Graph title="repository forks" {date} store={GQL_Forks} {viz} {loading} {transformResponse} />

@@ -5,8 +5,10 @@
 	import * as vl from 'vega-lite-api';
 	import { onMount } from 'svelte';
 	import { KitQLInfo } from '@kitql/all-in';
+	import Graph from '$lib/components/Graph.svelte';
 
-	export let repo, owner;
+	export let repo, owner, date;
+	let loading = true;
 
 	function transformResponse(data: Languages$result): { [key: string]: string | number }[] {
 		return data.repository.languages.edges.map(({ node, size }) => ({
@@ -25,16 +27,10 @@
 
 	onMount(async () => {
 		await GQL_Languages.fetch({ variables: { name: repo, owner } });
+		loading = false;
 	});
 </script>
 
 <!-- <KitQLInfo store={KQL_Languages} /> -->
 
-<!-- before this is rendered, the query has already been sent and thus state is `isFetching` -->
-{#if $GQL_Languages.isFetching}
-	Loading
-{:else if $GQL_Languages.errors}
-	{JSON.stringify($GQL_Languages.errors)}
-{:else if $GQL_Languages.data}
-	<Vega title="languages" data={transformResponse($GQL_Languages.data)} {viz} />
-{/if}
+<Graph title="languages" {date} store={GQL_Languages} {viz} {loading} {transformResponse} />

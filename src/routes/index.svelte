@@ -49,8 +49,8 @@
 		</div>
 		{#if source}
 			<Forks repo={source.repo} owner={source.owner} {date} />
-			<Collaborators repo={source.repo} owner={source.owner} />
-			<Languages repo={source.repo} owner={source.owner} />
+			<Collaborators repo={source.repo} owner={source.owner} {date} />
+			<Languages repo={source.repo} owner={source.owner} {date} />
 			<Close repo={source.repo} owner={source.owner} {date} />
 			<FirstResponse repo={source.repo} owner={source.owner} {date} />
 			<Burstiness repo={source.repo} owner={source.owner} {date} />

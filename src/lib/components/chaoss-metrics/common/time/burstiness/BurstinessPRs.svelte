@@ -7,6 +7,7 @@
 	import KitQlInfo from '@kitql/all-in/KitQLInfo.svelte';
 	import * as vl from 'vega-lite-api';
 	import { getHoudiniContext } from '$houdini';
+	import Graph from '$lib/components/Graph.svelte';
 
 	export let repo, owner, date;
 	let loading = true;
@@ -69,12 +70,4 @@
 	});
 </script>
 
-{#if loading || $GQL_BurstinessPRs.isFetching}
-	<div class="flex items-center justify-center mt-6">
-		<progress class="progress w-56" />
-	</div>
-{:else if $GQL_BurstinessPRs.errors}
-	{JSON.stringify($GQL_BurstinessPRs.errors)}
-{:else if $GQL_BurstinessPRs.data && !loading}
-	<Vega title="pr burstiness" data={transformResponse($GQL_BurstinessPRs.data, date)} {viz} />
-{/if}
+<Graph title="pr burstiness" {date} store={GQL_BurstinessPRs} {viz} {loading} {transformResponse} />

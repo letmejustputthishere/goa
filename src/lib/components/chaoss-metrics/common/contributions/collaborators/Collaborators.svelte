@@ -4,8 +4,9 @@
 	import * as vl from 'vega-lite-api';
 	import { onMount } from 'svelte';
 	import Vega from '$lib/components/Vega.svelte';
+	import Graph from '$lib/components/Graph.svelte';
 
-	export let repo, owner;
+	export let repo, owner, date;
 	let loading = true;
 
 	const context = getHoudiniContext();
@@ -46,14 +47,4 @@
 	});
 </script>
 
-{#if $GQL_Collaborators.errors}
-	<div class="justify-center flex items-center">
-		{JSON.stringify($GQL_Collaborators.errors[0].message)}
-	</div>
-{:else if loading || $GQL_Collaborators.isFetching}
-	<div class="flex items-center justify-center mt-6">
-		<progress class="progress w-56" />
-	</div>
-{:else if $GQL_Collaborators.data && !loading}
-	<Vega title="resporitory forks" data={transformResponse($GQL_Collaborators.data)} {viz} />
-{/if}
+<Graph title="collaborators" {date} store={GQL_Collaborators} {viz} {loading} {transformResponse} />

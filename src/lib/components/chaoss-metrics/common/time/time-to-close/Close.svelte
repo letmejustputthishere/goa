@@ -6,7 +6,7 @@
 	import type { Close$result } from '$houdini';
 	import { getHoudiniContext } from '$houdini';
 	import * as vl from 'vega-lite-api';
-	import { valueArray } from 'vega-lite/build/src/channeldef';
+	import Graph from '$lib/components/Graph.svelte';
 
 	export let repo, owner, date;
 	let loading = true;
@@ -98,12 +98,4 @@
 	});
 </script>
 
-{#if loading || $GQL_Close.isFetching}
-	<div class="flex items-center justify-center mt-6">
-		<progress class="progress w-56" />
-	</div>
-{:else if $GQL_Close.errors}
-	{JSON.stringify($GQL_Close.errors)}
-{:else if $GQL_Close.data && !loading}
-	<Vega title="time to close" data={transformResponse($GQL_Close.data, date)} {viz} />
-{/if}
+<Graph title="time to close" {date} store={GQL_Close} {viz} {loading} {transformResponse} />

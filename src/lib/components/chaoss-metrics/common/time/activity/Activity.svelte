@@ -6,6 +6,7 @@
 	import { getHoudiniContext } from '$houdini';
 	import * as vl from 'vega-lite-api';
 	import { GQL_Commits } from '$houdini';
+	import Graph from '$lib/components/Graph.svelte';
 
 	export let repo, owner, date;
 	let loading = true;
@@ -52,12 +53,4 @@
 	});
 </script>
 
-{#if loading || $GQL_Commits.isFetching}
-	<div class="flex items-center justify-center mt-6">
-		<progress class="progress w-56" />
-	</div>
-{:else if $GQL_Commits.errors}
-	{JSON.stringify($GQL_Commits.errors)}
-{:else if $GQL_Commits.data && !loading}
-	<Vega title="commit activity" data={transformResponse($GQL_Commits.data, date)} {viz} />
-{/if}
+<Graph title="commit activity" {date} store={GQL_Commits} {viz} {loading} {transformResponse} />

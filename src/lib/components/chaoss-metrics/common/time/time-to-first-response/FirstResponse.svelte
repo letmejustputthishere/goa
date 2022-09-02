@@ -6,6 +6,7 @@
 	import type { FirstResponse$result } from '$houdini';
 	import { getHoudiniContext } from '$houdini';
 	import * as vl from 'vega-lite-api';
+	import Graph from '$lib/components/Graph.svelte';
 
 	export let repo, owner, date;
 	let loading = true;
@@ -107,16 +108,4 @@
 	});
 </script>
 
-{#if loading || $GQL_FirstResponse.isFetching}
-	<div class="flex items-center justify-center mt-6">
-		<progress class="progress w-56" />
-	</div>
-{:else if $GQL_FirstResponse.errors}
-	{JSON.stringify($GQL_FirstResponse.errors)}
-{:else if $GQL_FirstResponse.data && !loading}
-	<Vega
-		title="time to first response"
-		data={transformResponse($GQL_FirstResponse.data, date)}
-		{viz}
-	/>
-{/if}
+<Graph title="time to close" {date} store={GQL_FirstResponse} {viz} {loading} {transformResponse} />
