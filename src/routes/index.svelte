@@ -11,6 +11,9 @@
 	import { onMount } from 'svelte';
 	import { exchangeCodeForToken, setup, logout } from '../oauth';
 	import FirstResponse from '$lib/components/chaoss-metrics/common/time/time-to-first-response/FirstResponse.svelte';
+	import BurstinessDiscussions from '$lib/components/chaoss-metrics/common/time/burstiness/BurstinessDiscussions.svelte';
+	import BurstinessIssues from '$lib/components/chaoss-metrics/common/time/burstiness/BurstinessIssues.svelte';
+	import BurstinessPRs from '$lib/components/chaoss-metrics/common/time/burstiness/BurstinessPRs.svelte';
 
 	let source: { repo: string; owner: string } = null;
 	// let source: { repo: string; owner: string } = {
@@ -53,7 +56,10 @@
 			<Languages repo={source.repo} owner={source.owner} {date} />
 			<Close repo={source.repo} owner={source.owner} {date} />
 			<FirstResponse repo={source.repo} owner={source.owner} {date} />
-			<Burstiness repo={source.repo} owner={source.owner} {date} />
+			<!-- <Burstiness repo={source.repo} owner={source.owner} {date} /> -->
+			<BurstinessDiscussions repo={source.repo} owner={source.owner} {date} />
+			<BurstinessIssues repo={source.repo} owner={source.owner} {date} />
+			<BurstinessPRs repo={source.repo} owner={source.owner} {date} />
 			<Activity repo={source.repo} owner={source.owner} {date} />
 		{:else}
 			Please enter a GitHub URL
