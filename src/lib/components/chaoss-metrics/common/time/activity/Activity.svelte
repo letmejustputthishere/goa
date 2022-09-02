@@ -38,7 +38,7 @@
 	}
 
 	const viz = vl
-		.markTrail({
+		.markBar({
 			tooltip: true,
 			point: true
 		})

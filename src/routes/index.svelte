@@ -38,31 +38,34 @@
 	});
 </script>
 
-{#if !$store.isAuthed}
-	<a href="/api/github/oauth/login">
-		<button class="btn"> login </button>
-	</a>
-{:else}
-	<button class="btn" on:click={() => logout({ invalidateToken: true })}>logout</button>
-
-	<div class="flex flex-col justify-center m-6">
-		<div class="flex justify-center">
+<div class="flex flex-col justify-center m-6">
+	{#if !$store.isAuthed}
+		<div class="flex justify-center fixed top-0 my-10 inset-x-0 z-10">
+			<a href="/api/github/oauth/login">
+				<button class="btn"> login </button>
+			</a>
+		</div>
+	{:else}
+		<div class="flex justify-center fixed top-0 my-10 inset-x-0 z-10">
 			<DateRangeSelector bind:selected={date} />
 			<GitHubUrlInput bind:source />
+			<button class="btn" on:click={() => logout({ invalidateToken: true })}>logout</button>
 		</div>
 		{#if source}
-			<Forks repo={source.repo} owner={source.owner} {date} />
-			<Collaborators repo={source.repo} owner={source.owner} {date} />
-			<Languages repo={source.repo} owner={source.owner} {date} />
-			<Close repo={source.repo} owner={source.owner} {date} />
-			<FirstResponse repo={source.repo} owner={source.owner} {date} />
-			<!-- <Burstiness repo={source.repo} owner={source.owner} {date} /> -->
-			<BurstinessDiscussions repo={source.repo} owner={source.owner} {date} />
-			<BurstinessIssues repo={source.repo} owner={source.owner} {date} />
-			<BurstinessPRs repo={source.repo} owner={source.owner} {date} />
-			<Activity repo={source.repo} owner={source.owner} {date} />
+			<div class="my-20">
+				<Forks repo={source.repo} owner={source.owner} {date} />
+				<Collaborators repo={source.repo} owner={source.owner} {date} />
+				<Languages repo={source.repo} owner={source.owner} {date} />
+				<Close repo={source.repo} owner={source.owner} {date} />
+				<FirstResponse repo={source.repo} owner={source.owner} {date} />
+				<!-- <Burstiness repo={source.repo} owner={source.owner} {date} /> -->
+				<BurstinessDiscussions repo={source.repo} owner={source.owner} {date} />
+				<BurstinessIssues repo={source.repo} owner={source.owner} {date} />
+				<BurstinessPRs repo={source.repo} owner={source.owner} {date} />
+				<Activity repo={source.repo} owner={source.owner} {date} />
+			</div>
 		{:else}
 			Please enter a GitHub URL
 		{/if}
-	</div>
-{/if}
+	{/if}
+</div>

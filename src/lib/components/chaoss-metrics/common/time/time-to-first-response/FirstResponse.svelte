@@ -61,6 +61,8 @@
 		);
 	}
 
+	// we create the param first
+	const brush = vl.selectInterval().encodings('x');
 	const viz = vl.layer(
 		vl
 			.markBar({
@@ -73,9 +75,12 @@
 			// .transform(vl.filter('year(datum.created) === year'))
 			.encode(
 				vl.x().timeYM('created').fieldO('created').axis({ title: 'Date', format: '%b %y' }),
-				vl.y().aggregate('mean').fieldQ('duration').axis({ title: 'mean (in hours)' })
+				vl.y().aggregate('mean').fieldQ('duration').axis({ title: 'mean (in hours)' }),
+				vl.opacity().value(0.7).if(brush, vl.value(1))
 				// .axis({ title: vl.expr('aggregation') })
-			),
+			)
+			// and then pass it into params
+			.params(brush),
 		vl
 			.markRule({
 				tooltip: true
@@ -84,13 +89,15 @@
 				vl.strokeWidth({ value: 4 }),
 				vl.y().aggregate('mean').fieldQ('duration'),
 				vl.color({ value: 'green' })
-			),
+			)
+			.transform(vl.filter(brush)),
 		vl
 			.markRule({
 				tooltip: true,
 				strokeWidth: 4
 			})
 			.encode(vl.y().aggregate('median').fieldQ('duration'), vl.color({ value: 'red' }))
+			.transform(vl.filter(brush))
 	);
 
 	onMount(async () => {
