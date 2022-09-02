@@ -10,7 +10,7 @@
 	export let repo, owner, date;
 	let loading = true;
 
-	function transformResponse(data: Languages$result): { [key: string]: string | number }[] {
+	function transformResponse(data: Languages$result, date): { [key: string]: string | number }[] {
 		return data.repository.languages.edges.map(({ node, size }) => ({
 			size,
 			name: node.name
@@ -33,4 +33,6 @@
 
 <!-- <KitQLInfo store={KQL_Languages} /> -->
 
-<Graph title="languages" {date} store={GQL_Languages} {viz} {loading} {transformResponse} />
+<Graph store={GQL_Languages} {loading}>
+	<Vega title="languages" data={transformResponse($GQL_Languages.data, date)} {viz} />
+</Graph>

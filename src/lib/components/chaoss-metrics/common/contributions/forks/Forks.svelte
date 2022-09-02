@@ -53,4 +53,6 @@
 	});
 </script>
 
-<Graph title="repository forks" {date} store={GQL_Forks} {viz} {loading} {transformResponse} />
+<Graph store={GQL_Forks} {loading}>
+	<Vega title="repository forks" data={transformResponse($GQL_Forks.data, date)} {viz} />
+</Graph>

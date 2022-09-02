@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Vega from '$lib/components/Vega.svelte';
 	import { GQL_BurstinessIssues } from '$houdini';
 	import moment from 'moment';
 	import type { BurstinessIssues$result } from '$houdini';
@@ -7,6 +6,7 @@
 	import * as vl from 'vega-lite-api';
 	import { onMount } from 'svelte';
 	import Graph from '$lib/components/Graph.svelte';
+	import VegaConcat from '$lib/components/VegaConcat.svelte';
 
 	export let repo, owner, date;
 	let loading = true;
@@ -37,15 +37,27 @@
 			}));
 	}
 
-	const viz = vl
-		.markTrail({
+	const brush = vl.selectInterval('brush').encodings(['x']);
+
+	let viz1 = vl
+		.markArea({
 			tooltip: true,
 			point: true
 		})
 		.encode(
-			vl.x().timeYM('date').fieldO('date').axis({ title: 'Date', format: '%b %y' }),
+			vl.x().timeYMD('date').fieldT('date').axis({ title: '' }).scale({ domain: brush }),
 			vl.y().count().axis({ title: 'Issues created' })
 		);
+
+	let viz2 = vl
+		.markArea()
+		.params(brush)
+		.encode(
+			vl.x().timeYMD('date').fieldT('date').axis({ title: 'Date', format: '%b %y' }),
+			vl.y().count().axis({ title: 'Issues created' })
+		);
+
+	let viz = [viz1, viz2];
 
 	onMount(async () => {
 		await GQL_BurstinessIssues.fetch({ variables: { name: repo, owner } });
@@ -53,11 +65,10 @@
 	});
 </script>
 
-<Graph
-	title="issue burstiness"
-	{date}
-	store={GQL_BurstinessIssues}
-	{viz}
-	{loading}
-	{transformResponse}
-/>
+<Graph store={GQL_BurstinessIssues} {loading}>
+	<VegaConcat
+		title="issue burstiness"
+		data={transformResponse($GQL_BurstinessIssues.data, date)}
+		{viz}
+	/>
+</Graph>

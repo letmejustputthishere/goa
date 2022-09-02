@@ -19,7 +19,10 @@
 		loading = false;
 	}
 
-	function transformResponse(data: Collaborators$result): { [key: string]: string | number }[] {
+	function transformResponse(
+		data: Collaborators$result,
+		date
+	): { [key: string]: string | number }[] {
 		let aggregation = [];
 		data.repository.collaborators.edges.forEach(({ node }) => {
 			// count appearance of each location
@@ -47,4 +50,6 @@
 	});
 </script>
 
-<Graph title="collaborators" {date} store={GQL_Collaborators} {viz} {loading} {transformResponse} />
+<Graph store={GQL_Collaborators} {loading}>
+	<Vega title="collaborators" data={transformResponse($GQL_Collaborators.data, date)} {viz} />
+</Graph>

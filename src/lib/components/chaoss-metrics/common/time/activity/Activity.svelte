@@ -53,4 +53,6 @@
 	});
 </script>
 
-<Graph title="commit activity" {date} store={GQL_Commits} {viz} {loading} {transformResponse} />
+<Graph store={GQL_Commits} {loading}>
+	<Vega title="commit activity" data={transformResponse($GQL_Commits.data, date)} {viz} />
+</Graph>

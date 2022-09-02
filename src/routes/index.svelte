@@ -15,11 +15,11 @@
 	import BurstinessIssues from '$lib/components/chaoss-metrics/common/time/burstiness/BurstinessIssues.svelte';
 	import BurstinessPRs from '$lib/components/chaoss-metrics/common/time/burstiness/BurstinessPRs.svelte';
 
-	let source: { repo: string; owner: string } = null;
-	// let source: { repo: string; owner: string } = {
-	// 	repo: 'kit',
-	// 	owner: 'sveltejs'
-	// };
+	// let source: { repo: string; owner: string } = null;
+	let source: { repo: string; owner: string } = {
+		repo: 'kit',
+		owner: 'sveltejs'
+	};
 	let date: Date;
 
 	onMount(async () => {

@@ -1,13 +1,13 @@
 <script lang="ts">
 	import moment from 'moment';
 	import { onMount } from 'svelte';
-	import Vega from '$lib/components/Vega.svelte';
 	import { GQL_BurstinessPRs } from '$houdini';
 	import type { BurstinessPRs$result } from '$houdini';
 	import KitQlInfo from '@kitql/all-in/KitQLInfo.svelte';
 	import * as vl from 'vega-lite-api';
 	import { getHoudiniContext } from '$houdini';
 	import Graph from '$lib/components/Graph.svelte';
+	import VegaConcat from '$lib/components/VegaConcat.svelte';
 
 	export let repo, owner, date;
 	let loading = true;
@@ -44,15 +44,27 @@
 		);
 	}
 
-	const viz = vl
-		.markTrail({
+	const brush = vl.selectInterval('brush').encodings(['x']);
+
+	let viz1 = vl
+		.markArea({
 			tooltip: true,
 			point: true
 		})
 		.encode(
-			vl.x().timeYM('date').fieldO('date').axis({ title: 'Date', format: '%b %y' }),
+			vl.x().timeYMD('date').fieldT('date').axis({ title: '' }).scale({ domain: brush }),
 			vl.y().count().axis({ title: 'pr created' })
 		);
+
+	let viz2 = vl
+		.markArea()
+		.params(brush)
+		.encode(
+			vl.x().timeYMD('date').fieldT('date').axis({ title: 'Date', format: '%b %y' }),
+			vl.y().count().axis({ title: 'pr created' })
+		);
+
+	let viz = [viz1, viz2];
 
 	onMount(async () => {
 		await GQL_BurstinessPRs.fetch({
@@ -70,4 +82,6 @@
 	});
 </script>
 
-<Graph title="pr burstiness" {date} store={GQL_BurstinessPRs} {viz} {loading} {transformResponse} />
+<Graph store={GQL_BurstinessPRs} {loading}>
+	<VegaConcat title="pr burstiness" data={transformResponse($GQL_BurstinessPRs.data, date)} {viz} />
+</Graph>

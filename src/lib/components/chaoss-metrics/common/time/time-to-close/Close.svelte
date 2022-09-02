@@ -98,4 +98,6 @@
 	});
 </script>
 
-<Graph title="time to close" {date} store={GQL_Close} {viz} {loading} {transformResponse} />
+<Graph store={GQL_Close} {loading}>
+	<Vega title="time to close" data={transformResponse($GQL_Close.data, date)} {viz} />
+</Graph>

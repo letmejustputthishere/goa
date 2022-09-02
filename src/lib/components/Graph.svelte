@@ -1,12 +1,6 @@
 <script lang="ts">
-	import Vega from '$lib/components/Vega.svelte';
-
 	export let store;
-	export let viz;
 	export let loading;
-	export let transformResponse;
-	export let title;
-	export let date;
 </script>
 
 {#if $store.errors}
@@ -18,5 +12,5 @@
 		<progress class="progress w-56" />
 	</div>
 {:else if $store.data && !loading}
-	<Vega {title} data={transformResponse($store.data, date)} {viz} />
+	<slot />
 {/if}

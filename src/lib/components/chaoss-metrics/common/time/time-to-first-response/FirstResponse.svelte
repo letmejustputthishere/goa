@@ -108,4 +108,10 @@
 	});
 </script>
 
-<Graph title="time to close" {date} store={GQL_FirstResponse} {viz} {loading} {transformResponse} />
+<Graph store={GQL_FirstResponse} {loading}>
+	<Vega
+		title="time to first response"
+		data={transformResponse($GQL_FirstResponse.data, date)}
+		{viz}
+	/>
+</Graph>
