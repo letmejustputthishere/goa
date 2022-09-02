@@ -10,10 +10,6 @@ query FirstResponse($querystring: String!) {
 				__typename
 				... on PullRequest {
 					createdAt
-					url
-					author {
-						login
-					}
 					timelineItems(
 						first: 10
 						itemTypes: [
@@ -25,7 +21,6 @@ query FirstResponse($querystring: String!) {
 							READY_FOR_REVIEW_EVENT
 							REVIEW_REQUESTED_EVENT
 							MARKED_AS_DUPLICATE_EVENT
-							MILESTONED_EVENT
 						]
 					) {
 						nodes {
