@@ -2,6 +2,14 @@ The current version of this application is deployed to `https://goa-app.vercel.a
 
 # development
 
+- make sure you create a github application for authenticating users. follow the steps [here](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app)
+
+- make sure you have a `.env` file in the root directory of this repository, check `.env.example` for the required variables. `CLIENT_SECRET` and `CLIENT_ID` are the credentials for the GitHub OAuth app. make sure for the callback url you use `http://localhost:3000` in the app settings when developing locally.
+
+- make sure you have `vercel` installed. for instructions follow [this ](https://vercel.com/docs/cli)
+
+- run `yarn install` or `npm install` to install the dependencies
+
 - we rely on vercel serverless functions to authenticate to github, thus we have to use `vercel dev -l 127.0.0.1:3000` for local development instead of `yarn dev`. make sure the correct callback url is set in the github application settings.
 
 # deployment
