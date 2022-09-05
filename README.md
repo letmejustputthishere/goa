@@ -2,6 +2,10 @@ The current version of this application is deployed to `https://goa-app.vercel.a
 
 # development
 
+- for the best developer experience, we recommend using [Visual Studio Code](https://code.visualstudio.com/) along with the following extensions
+  - https://marketplace.visualstudio.com/items?itemName=GraphQL.vscode-graphql
+  - https://marketplace.visualstudio.com/items?itemName=luyizhi.vscode-graphql
+
 ## local deployment
 
 - make sure you create a github application for authenticating users. follow the steps [here](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app)
