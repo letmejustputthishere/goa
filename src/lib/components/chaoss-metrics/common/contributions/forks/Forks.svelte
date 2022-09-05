@@ -32,7 +32,6 @@
 			.map(({ node }) => {
 				return {
 					date: node.createdAt.toISOString(),
-					url: node.url
 				};
 			});
 	}
