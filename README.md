@@ -2,6 +2,8 @@ The current version of this application is deployed to `https://goa-app.vercel.a
 
 # development
 
+## local deployment
+
 - make sure you create a github application for authenticating users. follow the steps [here](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app)
 
 - make sure you have a `.env` file in the root directory of this repository, check `.env.example` for the required variables. `CLIENT_SECRET` and `CLIENT_ID` are the credentials for the GitHub OAuth app. make sure for the callback url you use `http://localhost:3000` in the app settings when developing locally.
@@ -11,6 +13,16 @@ The current version of this application is deployed to `https://goa-app.vercel.a
 - run `yarn install` or `npm install` to install the dependencies
 
 - we rely on vercel serverless functions to authenticate to github, thus we have to use `vercel dev -l 127.0.0.1:3000` for local development instead of `yarn dev`. make sure the correct callback url is set in the github application settings.
+
+## implementing new metrics
+
+- all of the are defined in `src/lib/components/chaoss-metrics`
+
+- a metric consists of a `.gql` file, that contains the graphql query, and a `.svelte` file that contains the svelte component that renders the metric.
+
+- to explore the API, you can use the [explorer](https://docs.github.com/en/graphql/overview/explorer)
+
+- to find out more about vega-lite api, the following collection of examples is very helpful: [https://observablehq.com/collection/@vega/vega-lite-api](https://observablehq.com/collection/@vega/vega-lite-api)
 
 # deployment
 
