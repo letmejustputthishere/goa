@@ -10,7 +10,7 @@ The current version of this application is deployed to `https://goa-app.vercel.a
 
 - make sure you create a github application for authenticating users. follow the steps [here](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app)
 
-- make sure you have a `.env` file in the root directory of this repository, check `.env.example` for the required variables. `CLIENT_SECRET` and `CLIENT_ID` are the credentials for the GitHub OAuth app. make sure for the callback url you use `http://localhost:3000` in the app settings when developing locally.
+- make sure you have a `.env` file in the root directory of this repository, check `.env.example` for the required variables. `CLIENT_SECRET` and `CLIENT_ID` are the credentials for the GitHub OAuth app. make sure for the callback url you use `http://localhost:3000` in the github app settings when developing locally.
 
 - make sure you have `vercel` installed. for instructions follow [this ](https://vercel.com/docs/cli)
 
@@ -20,7 +20,7 @@ The current version of this application is deployed to `https://goa-app.vercel.a
 
 ## implementing new metrics
 
-- all of the are defined in `src/lib/components/chaoss-metrics`
+- all of the metrics are defined in `src/lib/components/chaoss-metrics`
 
 - a metric consists of a `.gql` file, that contains the graphql query, and a `.svelte` file that contains the svelte component that renders the metric.
 
@@ -44,42 +44,3 @@ The current version of this application is deployed to `https://goa-app.vercel.a
 - provide reasonable `limits` for queries, otherwise you're waisting points on the API rate limit
 - e.g. it's unlikely there are more than 20 reviews for a PR, use that as a limit instead of 100 and paginate if needed
 - a limit of 50 seems to be a good default for heavy queries to prevent timeouts
-
-# create-svelte
-
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm init svelte
-
-# create a new project in my-app
-npm init svelte my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
