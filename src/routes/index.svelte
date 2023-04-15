@@ -59,7 +59,7 @@
 				<Close repo={source.repo} owner={source.owner} {date} />
 				<FirstResponse repo={source.repo} owner={source.owner} {date} />
 				<!-- <Burstiness repo={source.repo} owner={source.owner} {date} /> -->
-				<BurstinessDiscussions repo={source.repo} owner={source.owner} {date} />
+				<!-- <BurstinessDiscussions repo={source.repo} owner={source.owner} {date} /> -->
 				<BurstinessIssues repo={source.repo} owner={source.owner} {date} />
 				<BurstinessPRs repo={source.repo} owner={source.owner} {date} />
 				<Activity repo={source.repo} owner={source.owner} {date} />

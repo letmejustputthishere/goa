@@ -15,10 +15,10 @@
 			label: 'PRs',
 			component: BurstinessPRs
 		},
-		// {
-		// 	label: 'Discussions',
-		// 	component: BurstinessDiscussions
-		// }
+		{
+			label: 'Discussions',
+			component: BurstinessDiscussions
+		}
 	];
 </script>
 
