@@ -1,0 +1,15 @@
+query New($querystring: String!) {
+	search(query: $querystring, type: ISSUE, first: 100) @paginate {
+		edges {
+			node {
+				__typename
+				... on Issue {
+					createdAt
+					author {
+						login
+					}
+				}
+			}
+		}
+	}
+}

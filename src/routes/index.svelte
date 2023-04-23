@@ -14,6 +14,7 @@
 	import BurstinessDiscussions from '$lib/components/chaoss-metrics/common/time/burstiness/BurstinessDiscussions.svelte';
 	import BurstinessIssues from '$lib/components/chaoss-metrics/common/time/burstiness/BurstinessIssues.svelte';
 	import BurstinessPRs from '$lib/components/chaoss-metrics/common/time/burstiness/BurstinessPRs.svelte';
+	import NewIssues from '$lib/components/chaoss-metrics/evolution/issue-resolution/NewIssues.svelte';
 
 	let source: { repo: string; owner: string } = null;
 	// let source: { repo: string; owner: string } = {
@@ -63,6 +64,7 @@
 				<BurstinessIssues repo={source.repo} owner={source.owner} {date} />
 				<BurstinessPRs repo={source.repo} owner={source.owner} {date} />
 				<Activity repo={source.repo} owner={source.owner} {date} />
+				<NewIssues repo={source.repo} owner={source.owner} {date} />
 			</div>
 		{:else}
 			Please enter a GitHub URL
