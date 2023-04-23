@@ -41,7 +41,7 @@
 <div class="flex flex-col justify-center m-6">
 	{#if !$store.isAuthed}
 		<div class="flex justify-center fixed top-0 my-10 inset-x-0 z-10">
-			<a href="/api/github/oauth/login?scopes=public_repo">
+			<a href="/api/github/oauth/login">
 				<button class="btn"> login </button>
 			</a>
 		</div>
@@ -54,7 +54,7 @@
 		{#if source}
 			<div class="my-20">
 				<Forks repo={source.repo} owner={source.owner} {date} />
-				<Collaborators repo={source.repo} owner={source.owner} {date} />
+				<!-- <Collaborators repo={source.repo} owner={source.owner} {date} /> -->
 				<Languages repo={source.repo} owner={source.owner} {date} />
 				<Close repo={source.repo} owner={source.owner} {date} />
 				<FirstResponse repo={source.repo} owner={source.owner} {date} />
