@@ -41,7 +41,7 @@
 <div class="flex flex-col justify-center m-6">
 	{#if !$store.isAuthed}
 		<div class="flex justify-center fixed top-0 my-10 inset-x-0 z-10">
-			<a href="/api/github/oauth/login?scope=public_repo">
+			<a href="/api/github/oauth/login?scopes=public_repo">
 				<button class="btn"> login </button>
 			</a>
 		</div>
